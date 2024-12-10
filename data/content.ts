@@ -124,21 +124,24 @@ export const content = {
                 description: "Share your skills and time with our communities",
                 icon: "🤝",
                 link: "/volunteer",
-                image: "/work/work3.jpg"
+                image: "/work/work3.jpg",
+                cta: "Join Now",
             },
             {
                 title: "Donate",
                 description: "Support our initiatives financially",
                 icon: "❤️",
                 link: "/donate",
-                image: "/work/work23.jpg"
+                image: "/work/work23.jpg",
+                cta: "Donate Now",
             },
             {
                 title: "Partner",
                 description: "Collaborate with us on projects",
                 icon: "🤲",
                 link: "/partner",
-                image: "/work/work15.jpg"
+                image: "/work/work15.jpg",
+                cta: "Learn More",
             }
         ]
     },

@@ -16,7 +16,7 @@ export default function OurWork() {
                     >
                         <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">Our Work</h1>
                         <p className="text-xl text-emerald-50 max-w-2xl">
-                            Discover how we're making a difference through our various programs
+                            Discover how we&#39;re making a difference through our various programs
                             and initiatives across communities.
                         </p>
                     </motion.div>

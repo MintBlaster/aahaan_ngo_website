@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
+// Make sure the secret key exists and is a string
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+if (!RAZORPAY_KEY_SECRET) {
+    throw new Error('RAZORPAY_KEY_SECRET must be provided');
+}
+
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -16,7 +22,7 @@ export async function POST(request: Request) {
         // Verify signature
         const text = `${razorpay_order_id}|${razorpay_payment_id}`;
         const generated_signature = crypto
-            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+            .createHmac('sha256', RAZORPAY_KEY_SECRET as crypto.BinaryLike)
             .update(text)
             .digest('hex');
 

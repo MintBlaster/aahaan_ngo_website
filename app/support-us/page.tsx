@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Script from 'next/script';
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +20,7 @@ const DONATION_AMOUNTS = [
     { value: 5000, label: '₹5,000' },
 ];
 
-const MINIMUM_DONATION_AMOUNT = 100;
+const MINIMUM_DONATION_AMOUNT = 10;
 const DEFAULT_DONATION_AMOUNT = 1000;
 
 // Types
@@ -208,8 +207,6 @@ export default function SupportUs() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    
-
             <div className="max-w-md mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold text-gray-900">Support Our Cause</h2>
@@ -307,6 +304,15 @@ export default function SupportUs() {
                         Thank you for your donation! A confirmation email will be sent shortly.
                     </motion.div>
                 )}
+
+                {/* Membership Section */}
+                <div className="mt-8 p-4 bg-green-100 text-green-700 rounded-md">
+                    <h3 className="text-lg font-semibold">Membership Program Coming Soon!</h3>
+                    <p className="mt-2">
+                        We're excited to announce that a membership or subscription program will soon be available! Stay 
+                        tuned for updates and become a part of our mission to make a difference.
+                    </p>
+                </div>
             </div>
         </div>
     );

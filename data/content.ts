@@ -32,14 +32,14 @@ export const content = {
                 description: "Finding creative solutions to rural development challenges"
             },
             {
-                icon: "⚖️",
-                title: "Transparency",
-                description: "Maintaining clear and honest communication with all stakeholders"
+                icon: "🔍",
+                title: "Accountability",
+                description: "Taking responsibility for our actions and ensuring the highest ethical standards"
             },
             {
-                icon: "🎯",
-                title: "Impact Focused",
-                description: "Measuring and maximizing the positive impact of our programs"
+                icon: "🌟",
+                title: "Empowerment",
+                description: "Enabling individuals and communities to take control of their own development"
             },
             {
                 icon: "🌍",
@@ -141,7 +141,7 @@ export const content = {
                 icon: "🤲",
                 link: "/partner",
                 image: "/work/work15.jpg",
-                cta: "Learn More",
+                cta: "Coming Soon",
             }
         ]
     },

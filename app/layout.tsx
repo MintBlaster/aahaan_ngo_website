@@ -1,13 +1,27 @@
-import "@/app/globals.css";
+
+import { Poppins, Playfair_Display } from 'next/font/google';
+
 import Navbar from "@/components/Header";
 import Footer from "@/components/Footer";
-import Script from 'next/script'; // Add this import
+import React from "react";
+
+
+const poppins = Poppins({
+    weight: ['400', '700'],
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const playfair = Playfair_Display({
+    weight: ['400'],
+    subsets: ['latin'],
+    display: 'swap',
+});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
         <head>
-            {/* Meta tags for SEO */}
             <title>Aahaan NGO – Empowering Communities, Changing Lives</title>
             <meta name="description" content="Aahaan NGO focuses on health, education, and community initiatives to improve rural communities in India. Join us in making a difference!" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,20 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta property="og:image" content="/path-to-og-image.jpg" />
             <meta property="og:url" content="https://www.aahaanngo.org" />
             <meta name="twitter:card" content="summary_large_image" />
-
-            {/* Favicon */}
             <link rel="icon" href="/favicon.ico" />
-
-            {/* Open Graph / Twitter Card for social sharing */}
             <meta property="og:type" content="website" />
         </head>
-        <body className="font-sans bg-white text-gray-900 antialiased">
-        {/* Add Razorpay Script */}
-        <Script
-            src="https://checkout.razorpay.com/v1/checkout.js"
-            strategy="lazyOnload"
-        />
-
+        <body className={`${poppins.className} ${playfair.className} font-sans bg-white text-gray-900 antialiased`}>
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

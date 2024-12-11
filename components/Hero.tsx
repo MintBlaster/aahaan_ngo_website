@@ -110,7 +110,7 @@ const Hero = ({ content }: { content: HeroContent }) => {
                                 onClick={() => scrollToSection('mission')}
                                 className="border-2 border-white text-white px-8 py-4 rounded-md text-lg transition-all duration-300 hover:bg-white hover:text-gray-900"
                             >
-                                Learn More
+                                Discover How
                             </button>
                         </motion.div>
 

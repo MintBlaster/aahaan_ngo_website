@@ -2,6 +2,7 @@
 "use client"
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from "next/link";
 
 export default function OurWork() {
     return (
@@ -136,10 +137,12 @@ export default function OurWork() {
                         Your support enables us to continue making a positive impact
                         in communities that need it most.
                     </p>
+                    <Link href="/support-us">
                     <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
                                      hover:bg-emerald-50 transition-colors shadow-lg">
                         Donate Now
                     </button>
+                    </Link>
                 </div>
             </section>
         </main>

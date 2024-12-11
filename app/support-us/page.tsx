@@ -2,15 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Script from 'next/script';
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Heart, CheckCircle } from 'lucide-react';
 
-// Existing constants remain the same...
-const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
 const DONATION_AMOUNTS = [
     { value: 500, label: '₹500' },
     { value: 1000, label: '₹1,000' },
@@ -29,50 +26,17 @@ export default function SupportUs() {
     const [isCustomAmount, setIsCustomAmount] = useState<boolean>(false);
     const [donorName, setDonorName] = useState<string>('');
     const [donorEmail, setDonorEmail] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
-    const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    const [isLoading ] = useState<boolean>(false);
+    const [isFormDisabled ] = useState<boolean>(false);
+    const [showSuccess] = useState<boolean>(false);
 
-    // All existing methods remain the same...
-    const generateReceiptId = (): string => {
-        return `DONATION_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    };
-
-    const validateEmail = (email: string): boolean => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
-    const validateForm = (): boolean => {
-        if (!donorName.trim()) {
-            alert('Please enter your name');
-            return false;
-        }
-
-        if (!donorEmail.trim() || !validateEmail(donorEmail)) {
-            alert('Please enter a valid email address');
-            return false;
-        }
-
-        const finalAmount = isCustomAmount ? parseInt(customAmount) : amount;
-        if (!finalAmount || finalAmount < MINIMUM_DONATION_AMOUNT) {
-            alert(`Please enter a valid amount (minimum ₹${MINIMUM_DONATION_AMOUNT})`);
-            return false;
-        }
-
-        return true;
-    };
 
     const handlePayment = async () => {
         // Existing handlePayment method remains unchanged...
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-            <Script
-                src="https://checkout.razorpay.com/v1/checkout.js"
-                strategy="lazyOnload"
-            />
-
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">d
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

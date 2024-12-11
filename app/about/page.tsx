@@ -2,6 +2,7 @@
 "use client"
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from "next/link";
 
 export default function About() {
     return (
@@ -105,10 +106,12 @@ export default function About() {
                         Whether through volunteering, donations, or partnerships,
                         your support helps us create lasting change.
                     </p>
+                    <Link href="/get-involved">
                     <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
                                      hover:bg-emerald-50 transition-colors shadow-lg">
                         Get Involved
                     </button>
+                    </Link>
                 </div>
             </section>
         </main>

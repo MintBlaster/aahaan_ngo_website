@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
     return (
@@ -22,17 +22,17 @@ const Footer = () => {
                             Empowering communities through sustainable development and innovative solutions.
                         </p>
                         <div className="flex space-x-4 pt-4">
-                            <a href="#" className="hover:text-white transition-colors">
+                            <a href="https://facebook.com" className="hover:text-white transition-colors">
                                 <FaFacebookF size={20} />
                             </a>
-                            <a href="#" className="hover:text-white transition-colors">
+                            <a href="https://x.com" className="hover:text-white transition-colors">
                                 <FaTwitter size={20} />
                             </a>
-                            <a href="#" className="hover:text-white transition-colors">
+                            <a href="https://instagram.com" className="hover:text-white transition-colors">
                                 <FaInstagram size={20} />
                             </a>
-                            <a href="#" className="hover:text-white transition-colors">
-                                <FaLinkedinIn size={20} />
+                            <a href="https://whatsapp.com" className="hover:text-white transition-colors">
+                                <FaWhatsapp size={20} />
                             </a>
                         </div>
                     </motion.div>
@@ -87,6 +87,7 @@ const Footer = () => {
                         <div className="space-y-2">
                             <p>Thari Chaproli, Subathu</p>
                             <p>Himachal Pradesh, India 173206</p>
+                            <br />
                             <p>Phone: +91 8265002008</p>
                             <p>Email: info@aahaanngo.com</p>
                         </div>

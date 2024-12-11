@@ -2,6 +2,7 @@
 "use client"
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from "next/link";
 
 export default function Initiatives() {
     return (
@@ -45,9 +46,6 @@ export default function Initiatives() {
                                     Ensuring quality education reaches every child through our
                                     comprehensive programs and resources.
                                 </p>
-                                <button className="text-emerald-600 font-medium hover:text-emerald-700">
-                                    Learn More →
-                                </button>
                             </div>
                         </div>
 
@@ -69,9 +67,6 @@ export default function Initiatives() {
                                     Bringing essential healthcare services to underserved communities
                                     through mobile clinics and awareness programs.
                                 </p>
-                                <button className="text-emerald-600 font-medium hover:text-emerald-700">
-                                    Learn More →
-                                </button>
                             </div>
                         </div>
 
@@ -93,9 +88,6 @@ export default function Initiatives() {
                                     Supporting women through skill development, education, and
                                     entrepreneurship opportunities.
                                 </p>
-                                <button className="text-emerald-600 font-medium hover:text-emerald-700">
-                                    Learn More →
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -165,14 +157,18 @@ export default function Initiatives() {
                         donations or volunteer your time and skills.
                     </p>
                     <div className="flex justify-center gap-4 flex-wrap">
-                        <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
-                                         hover:bg-emerald-50 transition-colors shadow-lg">
-                            Donate Now
-                        </button>
-                        <button className="bg-transparent border-2 border-white text-white px-8 py-3
-                                         rounded-md font-medium hover:bg-white/10 transition-colors">
-                            Volunteer
-                        </button>
+                        <Link href="/support-us">
+                            <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
+                                             hover:bg-emerald-50 transition-colors shadow-lg">
+                                Donate Now
+                            </button>
+                        </Link>
+                        <Link href="/get-involved">
+                            <button className="bg-transparent border-2 border-white text-white px-8 py-3
+                                             rounded-md font-medium hover:bg-white/10 transition-colors">
+                                Volunteer
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </section>

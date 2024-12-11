@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SiRazorpay } from 'react-icons/si';
+import { SiRazorpay } from 'react-icons/si'; // Razorpay icon from react-icons
 
 const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
 if (!RAZORPAY_KEY_ID) {
@@ -202,7 +202,7 @@ export default function SupportUs() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-4xl font-extrabold text-gray-900">Support Our Cause</h2>
@@ -270,32 +270,29 @@ export default function SupportUs() {
                                     min={MINIMUM_DONATION_AMOUNT}
                                     value={customAmount}
                                     onChange={(e) => setCustomAmount(e.target.value)}
-                                    disabled={isFormDisabled}
+                                    disabled={isFormdisabled={isFormDisabled}
                                     required
                                     className="mt-2 p-3 border rounded-md w-full"
                                 />
                             </div>
                         )}
 
-                        <Button
-                            type="submit"
-                            className="w-full py-3 mt-6 text-xl font-semibold bg-green-500 text-white rounded-lg"
-                            onClick={handlePayment} disabled={isLoading || isFormDisabled}
-                        >
-                            {isLoading ? 'Processing Payment...' : 'Donate Now'}
-                        </Button>
-
                         {showSuccess && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="mt-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700"
-                            >
-                                <p className="text-lg font-semibold">Thank you for your donation!</p>
-                                <p>Your donation has been successfully processed. You will receive a confirmation email shortly.</p>
-                            </motion.div>
+                            <div className="mt-6 text-center text-green-600">
+                                <p className="text-xl font-semibold">Thank you for your generous donation!</p>
+                                <p>Your support helps us continue our mission. You will receive a receipt via email shortly.</p>
+                            </div>
                         )}
+
+                        <div className="mt-6 text-center">
+                            <Button
+                                onClick={handlePayment}
+                                disabled={isFormDisabled || isLoading}
+                                className={`w-full p-3 text-lg font-semibold rounded-lg ${isLoading ? 'bg-gray-300 text-gray-700' : 'bg-green-500 text-white'}`}
+                            >
+                                {isLoading ? 'Processing...' : 'Donate Now'}
+                            </Button>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -58,244 +58,167 @@ interface RazorpayOptions {
     };
 }
 
-interface RazorpayInstance {
-    open: () => void;
-    on: (event: string, callback: () => void) => void;
-    close: () => void;
-}
-
-interface RazorpayClass {
-    new (options: RazorpayOptions): RazorpayInstance;
-}
-
-declare global {
-    interface Window {
-        Razorpay: RazorpayClass;
-    }
-}
-
-export default function SupportUs() {
+const SupportUsPage = () => {
     const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
-    const [customAmount, setCustomAmount] = useState<string>('');
-    const [isCustomAmount, setIsCustomAmount] = useState<boolean>(false);
-    const [donorName, setDonorName] = useState<string>('');
-    const [donorEmail, setDonorEmail] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
-    const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
 
-    const generateReceiptId = (): string => {
-        return `DONATION_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    };
-
-    const validateEmail = (email: string): boolean => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
-    const validateForm = (): boolean => {
-        if (!donorName.trim()) {
-            alert('Please enter your name');
-            return false;
-        }
-
-        if (!donorEmail.trim() || !validateEmail(donorEmail)) {
-            alert('Please enter a valid email address');
-            return false;
-        }
-
-        const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
-        if (!finalAmount || finalAmount < MINIMUM_DONATION_AMOUNT) {
-            alert(`Please enter a valid amount (minimum ₹${MINIMUM_DONATION_AMOUNT})`);
-            return false;
-        }
-
-        return true;
-    };
-
-    const handlePayment = async () => {
-        if (!validateForm()) return;
-
-        setIsLoading(true);
-        setIsFormDisabled(true);
-
-        try {
-            const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
-
-            const orderResponse = await fetch('/api/create-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: finalAmount,
-                }),
-            });
-
-            if (!orderResponse.ok) {
-                throw new Error('Failed to create order');
-            }
-
-            const orderData = (await orderResponse.json()) as OrderResponse;
-
-            const options: RazorpayOptions = {
-                key: RAZORPAY_KEY_ID,
-                amount: finalAmount * 100,
-                currency: 'INR',
-                name: 'Your Organization Name',
-                description: 'Donation',
-                order_id: orderData.id,
-                handler: async (response: RazorpayResponse) => {
-                    try {
-                        const verifyResponse = await fetch('/api/verify-payment', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature,
-                            }),
-                        });
-
-                        if (!verifyResponse.ok) {
-                            throw new Error('Payment verification failed');
-                        }
-
-                        setShowSuccess(true);
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    } catch (error) {
-                        console.error('Verification error:', error);
-                        alert('Payment verification failed. Please contact support.');
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    }
-                },
-                prefill: {
-                    name: donorName,
-                    email: donorEmail,
-                },
-                notes: {
-                    address: 'Your Address',
-                    receipt_id: generateReceiptId(),
-                },
-                theme: {
-                    color: '#059669',
-                },
-                modal: {
-                    ondismiss: () => {
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    },
-                },
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => {
+                resolve(true);
             };
+            script.onerror = () => {
+                resolve(false);
+            };
+            document.body.appendChild(script);
+        });
+    };
 
-            const razorpay = new window.Razorpay(options);
-            razorpay.open();
-        } catch (error) {
-            console.error('Payment error:', error);
-            alert('Payment failed. Please try again or contact support.');
-            setIsLoading(false);
-            setIsFormDisabled(false);
+    const handleDonation = async () => {
+        if (!name || !email || amount < MINIMUM_DONATION_AMOUNT) {
+            alert('Please fill all fields with valid information.');
+            return;
         }
+
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+            alert('Failed to load Razorpay SDK. Please try again later.');
+            return;
+        }
+
+        // Create a new order on the backend
+        const orderData: OrderResponse = await fetch('/api/create-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount }),
+        }).then((res) => res.json());
+
+        const options: RazorpayOptions = {
+            key: RAZORPAY_KEY_ID,
+            amount: orderData.amount,
+            currency: orderData.currency,
+            name: 'Aahaan NGO',
+            description: 'Donation towards Aahaan NGO Initiatives',
+            order_id: orderData.id,
+            handler: (response: RazorpayResponse) => {
+                alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+            },
+            prefill: {
+                name,
+                email,
+            },
+            notes: {
+                address: 'Aahaan NGO Headquarters',
+                receipt_id: orderData.id,
+            },
+            theme: {
+                color: '#f37254', // Razorpay theme color, can customize to your NGO theme
+            },
+            modal: {
+                ondismiss: () => {
+                    console.log('Payment popup closed');
+                },
+            },
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto">
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl font-extrabold text-gray-900">Support Our Cause</h2>
-                    <p className="mt-2 text-xl text-gray-600">Every donation brings us one step closer to making a difference.</p>
+        <div className="max-w-4xl mx-auto p-6">
+            <motion.h1
+                className="text-4xl font-bold text-center text-primary mb-6"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                Support Our Cause
+            </motion.h1>
+            <motion.p
+                className="text-lg text-center text-gray-600 mb-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+            >
+                Your donation can help bring meaningful change to the lives of many. Every contribution counts.
+            </motion.p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <div>
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input
+                        id="name"
+                        placeholder="Your Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full"
+                    />
                 </div>
-
-                <div className="bg-white p-8 rounded-lg shadow-lg space-y-6">
-                    <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-                        <div>
-                            <Label htmlFor="name" className="text-lg font-medium">Name</Label>
-                            <Input
-                                id="name"
-                                type="text"
-                                value={donorName}
-                                onChange={(e) => setDonorName(e.target.value)}
-                                disabled={isFormDisabled}
-                                required
-                                className="mt-2 p-3 border rounded-md w-full"
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="email" className="text-lg font-medium">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                value={donorEmail}
-                                onChange={(e) => setDonorEmail(e.target.value)}
-                                disabled={isFormDisabled}
-                                required
-                                className="mt-2 p-3 border rounded-md w-full"
-                            />
-                        </div>
-
-                        <div>
-                            <Label className="text-lg font-medium">Donation Amount</Label>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                                {DONATION_AMOUNTS.map((option) => (
-                                    <Button
-                                        key={option.value}
-                                        className={`w-full p-3 text-lg font-semibold rounded-lg ${amount === option.value ? 'bg-green-500 text-white' : 'bg-gray-100'}`}
-                                        onClick={() => {
-                                            setIsCustomAmount(false);
-                                            setAmount(option.value);
-                                        }}
-                                    >
-                                        {option.label}
-                                    </Button>
-                                ))}
-                                <Button
-                                    className={`w-full p-3 text-lg font-semibold rounded-lg ${isCustomAmount ? 'bg-green-500 text-white' : 'bg-gray-100'}`}
-                                    onClick={() => setIsCustomAmount(true)}
-                                >
-                                    Custom Amount
-                                </Button>
-                            </div>
-                        </div>
-
-                        {isCustomAmount && (
-                            <div>
-                                <Label htmlFor="custom-amount" className="text-lg font-medium">Enter Amount (₹)</Label>
-                                <Input
-                                    id="custom-amount"
-                                    type="number"
-                                    min={MINIMUM_DONATION_AMOUNT}
-                                    value={customAmount}
-                                    onChange={(e) => setCustomAmount(e.target.value)}
-                                    disabled={isFormdisabled={isFormDisabled}
-                                    required
-                                    className="mt-2 p-3 border rounded-md w-full"
-                                />
-                            </div>
-                        )}
-
-                        {showSuccess && (
-                            <div className="mt-6 text-center text-green-600">
-                                <p className="text-xl font-semibold">Thank you for your generous donation!</p>
-                                <p>Your support helps us continue our mission. You will receive a receipt via email shortly.</p>
-                            </div>
-                        )}
-
-                        <div className="mt-6 text-center">
-                            <Button
-                                onClick={handlePayment}
-                                disabled={isFormDisabled || isLoading}
-                                className={`w-full p-3 text-lg font-semibold rounded-lg ${isLoading ? 'bg-gray-300 text-gray-700' : 'bg-green-500 text-white'}`}
-                            >
-                                {isLoading ? 'Processing...' : 'Donate Now'}
-                            </Button>
-                        </div>
-                    </form>
+                <div>
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full"
+                    />
                 </div>
             </div>
+
+            <div className="mb-8">
+                <Label>Select Donation Amount</Label>
+                <div className="flex space-x-4 mt-2">
+                    {DONATION_AMOUNTS.map((amountOption) => (
+                        <Button
+                            key={amountOption.value}
+                            variant={amount === amountOption.value ? 'default' : 'outline'}
+                            onClick={() => setAmount(amountOption.value)}
+                        >
+                            {amountOption.label}
+                        </Button>
+                    ))}
+                    <Input
+                        type="number"
+                        value={amount}
+                        onChange={(e) => setAmount(parseInt(e.target.value, 10) || 0)}
+                        placeholder={`Custom Amount (min ₹${MINIMUM_DONATION_AMOUNT})`}
+                        className="w-full sm:w-1/3"
+                    />
+                </div>
+            </div>
+
+            <div className="text-center">
+                <Button
+                    className="px-8 py-3 bg-primary text-white hover:bg-primary-dark flex items-center justify-center"
+                    onClick={handleDonation}
+                >
+                    <SiRazorpay className="mr-2" /> Donate via Razorpay
+                </Button>
+            </div>
+
+            <motion.div
+                className="mt-12 p-4 bg-gray-100 rounded-lg text-center"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+            >
+                <p className="text-lg font-semibold text-gray-700">
+                    Exciting News! Membership options are coming soon. Stay tuned to become a part of Aahaan NGO's journey.
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                    As a member, you'll have the opportunity to support our initiatives on an ongoing basis and be more involved in our community.
+                </p>
+            </motion.div>
         </div>
     );
-}
+};
+
+export default SupportUsPage;

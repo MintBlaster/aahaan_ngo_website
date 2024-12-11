@@ -2,7 +2,8 @@ import Script from 'next/script';
 import { Poppins, Playfair_Display } from 'next/font/google';
 import Navbar from "@/components/Header";
 import Footer from "@/components/Footer";
-import React from "react";
+import React from "react"
+import "@/app/globals.css"
 
 const poppins = Poppins({
   weight: ['400', '700'],

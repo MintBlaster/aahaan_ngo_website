@@ -1,16 +1,8 @@
-
 import { Poppins, Playfair_Display } from 'next/font/google';
-
 import Navbar from "@/components/Header";
 import Footer from "@/components/Footer";
 import React from "react";
-
-
-const poppins = Poppins({import { Poppins, Playfair_Display } from 'next/font/google';
-import Navbar from "@/components/Header";
-import Footer from "@/components/Footer";
-import React from "react";
-import '@/styles/globals.css'; 
+import '@/styles/globals.css'; // Ensure your TailwindCSS is properly imported here.
 
 const poppins = Poppins({
     weight: ['400', '700'],
@@ -47,43 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <main className="min-h-screen">{children}</main>
                 <Footer />
             </body>
-        </html>
-    );
-}
-    weight: ['400', '700'],
-    subsets: ['latin'],
-    display: 'swap',
-});
-
-const playfair = Playfair_Display({
-    weight: ['400'],
-    subsets: ['latin'],
-    display: 'swap',
-});
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <html lang="en">
-        <head>
-            <title>Aahaan NGO – Empowering Communities, Changing Lives</title>
-            <meta name="description" content="Aahaan NGO focuses on health, education, and community initiatives to improve rural communities in India. Join us in making a difference!" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta charSet="UTF-8" />
-            <meta name="robots" content="index, follow" />
-            <meta name="keywords" content="NGO, rural development, health camps, education, women empowerment, environmental programs, India" />
-            <meta property="og:title" content="Aahaan NGO – Empowering Communities, Changing Lives" />
-            <meta property="og:description" content="Transforming rural communities through health, education, and awareness initiatives." />
-            <meta property="og:image" content="/path-to-og-image.jpg" />
-            <meta property="og:url" content="https://www.aahaanngo.org" />
-            <meta name="twitter:card" content="summary_large_image" />
-            <link rel="icon" href="/favicon.ico" />
-            <meta property="og:type" content="website" />
-        </head>
-        <body className={`${poppins.className} ${playfair.className} font-sans bg-white text-gray-900 antialiased`}>
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        </body>
         </html>
     );
 }

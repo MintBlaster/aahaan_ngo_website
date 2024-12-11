@@ -2,7 +2,7 @@ import { Poppins, Playfair_Display } from 'next/font/google';
 import Navbar from "@/components/Header";
 import Footer from "@/components/Footer";
 import React from "react";
-import '@/styles/globals.css'; // Ensure your TailwindCSS is properly imported here.
+import '@/app/globals.css'; // Ensure your TailwindCSS is properly imported here.
 
 const poppins = Poppins({
     weight: ['400', '700'],

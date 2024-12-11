@@ -22,42 +22,6 @@ const DONATION_AMOUNTS = [
 const MINIMUM_DONATION_AMOUNT = 10;
 const DEFAULT_DONATION_AMOUNT = 1000;
 
-interface RazorpayResponse {
-    razorpay_payment_id: string;
-    razorpay_order_id: string;
-    razorpay_signature: string;
-}
-
-interface OrderResponse {
-    id: string;
-    amount: number;
-    currency: string;
-}
-
-interface RazorpayOptions {
-    key: string;
-    amount: number;
-    currency: string;
-    name: string;
-    description: string;
-    order_id: string;
-    handler: (response: RazorpayResponse) => void;
-    prefill: {
-        name: string;
-        email: string;
-    };
-    notes: {
-        address: string;
-        receipt_id: string;
-    };
-    theme: {
-        color: string;
-    };
-    modal: {
-        ondismiss: () => void;
-    };
-}
-
 const SupportUsPage = () => {
     const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
     const [name, setName] = useState<string>('');
@@ -90,7 +54,7 @@ const SupportUsPage = () => {
         }
 
         // Create a new order on the backend
-        const orderData: OrderResponse = await fetch('/api/create-order', {
+        const orderData = await fetch('/api/create-order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -98,14 +62,14 @@ const SupportUsPage = () => {
             body: JSON.stringify({ amount }),
         }).then((res) => res.json());
 
-        const options: RazorpayOptions = {
+        const options = {
             key: RAZORPAY_KEY_ID,
             amount: orderData.amount,
             currency: orderData.currency,
             name: 'Aahaan NGO',
             description: 'Donation towards Aahaan NGO Initiatives',
             order_id: orderData.id,
-            handler: (response: RazorpayResponse) => {
+            handler: (response: any) => {
                 alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
             },
             prefill: {
@@ -126,7 +90,7 @@ const SupportUsPage = () => {
             },
         };
 
-        const rzp = new window.Razorpay(options); // Explicitly typing Razorpay as window property
+        const rzp = new (window as any).Razorpay(options);
         rzp.open();
     };
 

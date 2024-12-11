@@ -230,7 +230,89 @@ export default function SupportUs(): React.JSX.Element {
 
                 <div className="bg-white p-6 md:p-10 rounded-xl shadow-2xl space-y-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* ... (rest of the form remains the same) ... */}
+                        <div className="space-y-4">
+                            <div>
+                                <Label htmlFor="name">Your Name</Label>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    value={donorName}
+                                    onChange={(e) => setDonorName(e.target.value)}
+                                    disabled={isFormDisabled}
+                                    placeholder="Enter your full name"
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="email">Email Address</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    value={donorEmail}
+                                    onChange={(e) => setDonorEmail(e.target.value)}
+                                    disabled={isFormDisabled}
+                                    placeholder="Enter your email"
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div>
+                                <Label>Donation Amount</Label>
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {DONATION_AMOUNTS.map((donationAmount) => (
+                                        <Button
+                                            key={donationAmount.value}
+                                            type="button"
+                                            variant={amount === donationAmount.value && !isCustomAmount ? 'default' : 'outline'}
+                                            onClick={() => {
+                                                setAmount(donationAmount.value);
+                                                setIsCustomAmount(false);
+                                            }}
+                                            disabled={isFormDisabled}
+                                            className="text-sm"
+                                        >
+                                            {donationAmount.label}
+                                        </Button>
+                                    ))}
+                                    <Button
+                                        type="button"
+                                        variant={isCustomAmount ? 'default' : 'outline'}
+                                        onClick={() => setIsCustomAmount(true)}
+                                        disabled={isFormDisabled}
+                                        className="text-sm"
+                                    >
+                                        Custom
+                                    </Button>
+                                </div>
+                                {isCustomAmount && (
+                                    <div className="mt-2">
+                                        <Input
+                                            type="number"
+                                            value={customAmount}
+                                            onChange={(e) => setCustomAmount(e.target.value)}
+                                            disabled={isFormDisabled}
+                                            placeholder="Enter custom amount"
+                                            min={MINIMUM_DONATION_AMOUNT}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <Button
+                            type="submit"
+                            onClick={handlePayment}
+                            disabled={isLoading || isFormDisabled}
+                            className="w-full flex items-center justify-center"
+                        >
+                            {isLoading ? (
+                                'Processing...'
+                            ) : (
+                                <>
+                                    <SiRazorpay className="mr-2" />
+                                    Donate Now
+                                </>
+                            )}
+                        </Button>
                     </form>
 
                     {showSuccess && (

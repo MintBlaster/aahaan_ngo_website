@@ -308,7 +308,7 @@ export default function SupportUs() {
                 <div className="mt-8 p-4 bg-blue-100 text-blue-700 rounded-md">
                     <h3 className="text-lg font-semibold">Join Our Membership Program</h3>
                     <p className="mt-2">
-                        We're excited to introduce our upcoming membership program. Stay tuned for more details and become an integral part of our mission to make a lasting impact.
+                         We will soon be offering membership options, giving you more ways to support our mission and stay involved.
                     </p>
                 </div>
             </div>

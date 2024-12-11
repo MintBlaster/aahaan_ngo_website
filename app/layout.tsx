@@ -44,35 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           src="https://checkout.razorpay.com/v1/checkout.js"
         />
-        <Script
-          id="razorpay-checkout"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.onload = function() {
-                var options = {
-                  key: 'YOUR_RAZORPAY_KEY',
-                  amount: '1000',
-                  currency: 'INR',
-                  name: 'Your Company',
-                  description: 'Test Transaction',
-                  handler: function (response) {
-                    alert(response.razorpay_payment_id);
-                  },
-                  prefill: {
-                    name: 'John Doe',
-                    email: 'john@example.com',
-                  },
-                  notes: {
-                    address: 'Hello World',
-                  },
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.open();
-              };
-            `,
-          }}
-        />
       </body>
     </html>
   );

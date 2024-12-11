@@ -126,7 +126,7 @@ const SupportUsPage = () => {
             },
         };
 
-        const rzp = new (window as any).Razorpay(options);
+        const rzp = new window.Razorpay(options); // Explicitly typing Razorpay as window property
         rzp.open();
     };
 
@@ -211,10 +211,10 @@ const SupportUsPage = () => {
                 transition={{ delay: 0.4, duration: 0.6 }}
             >
                 <p className="text-lg font-semibold text-gray-700">
-                    Exciting News! Membership options are coming soon. Stay tuned to become a part of Aahaan NGO's journey.
+                    Exciting News! Membership options are coming soon. Stay tuned to become a part of Aahaan NGO&apos;s journey.
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                    As a member, you'll have the opportunity to support our initiatives on an ongoing basis and be more involved in our community.
+                    As a member, you&apos;ll have the opportunity to support our initiatives on an ongoing basis and be more involved in our community.
                 </p>
             </motion.div>
         </div>

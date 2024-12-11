@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 // Constants
 const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
@@ -207,16 +206,16 @@ export default function SupportUs() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md mx-auto">
+            <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900">Support Our Cause</h2>
-                    <p className="mt-2 text-gray-600">Your contribution makes a difference</p>
+                    <h2 className="text-4xl font-extrabold text-gray-900">Support Our Cause</h2>
+                    <p className="mt-2 text-xl text-gray-600">Every donation brings us one step closer to making a difference.</p>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="bg-white p-8 rounded-lg shadow-lg space-y-6">
                     <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
                         <div>
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name" className="text-lg font-medium">Name</Label>
                             <Input
                                 id="name"
                                 type="text"
@@ -224,11 +223,12 @@ export default function SupportUs() {
                                 onChange={(e) => setDonorName(e.target.value)}
                                 disabled={isFormDisabled}
                                 required
+                                className="mt-2 p-3 border rounded-md w-full"
                             />
                         </div>
 
                         <div>
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email" className="text-lg font-medium">Email</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -236,42 +236,37 @@ export default function SupportUs() {
                                 onChange={(e) => setDonorEmail(e.target.value)}
                                 disabled={isFormDisabled}
                                 required
+                                className="mt-2 p-3 border rounded-md w-full"
                             />
                         </div>
 
                         <div>
-                            <Label>Select Amount</Label>
-                            <RadioGroup
-                                value={isCustomAmount ? 'custom' : amount.toString()}
-                                onValueChange={(value) => {
-                                    if (value === 'custom') {
-                                        setIsCustomAmount(true);
-                                    } else {
-                                        setIsCustomAmount(false);
-                                        setAmount(parseInt(value, 10));
-                                    }
-                                }}
-                            >
+                            <Label className="text-lg font-medium">Donation Amount</Label>
+                            <div className="grid grid-cols-2 gap-4 mt-2">
                                 {DONATION_AMOUNTS.map((option) => (
-                                    <div key={option.value} className="flex items-center space-x-2">
-                                        <RadioGroupItem
-                                            value={option.value.toString()}
-                                            id={`amount-${option.value}`}
-                                            disabled={isFormDisabled}
-                                        />
-                                        <Label htmlFor={`amount-${option.value}`}>{option.label}</Label>
-                                    </div>
+                                    <Button
+                                        key={option.value}
+                                        className={`w-full p-3 text-lg font-semibold rounded-lg ${amount === option.value ? 'bg-green-500 text-white' : 'bg-gray-100'}`}
+                                        onClick={() => {
+                                            setIsCustomAmount(false);
+                                            setAmount(option.value);
+                                        }}
+                                    >
+                                        {option.label}
+                                    </Button>
                                 ))}
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="custom" id="amount-custom" disabled={isFormDisabled} />
-                                    <Label htmlFor="amount-custom">Custom Amount</Label>
-                                </div>
-                            </RadioGroup>
+                                <Button
+                                    className={`w-full p-3 text-lg font-semibold rounded-lg ${isCustomAmount ? 'bg-green-500 text-white' : 'bg-gray-100'}`}
+                                    onClick={() => setIsCustomAmount(true)}
+                                >
+                                    Custom Amount
+                                </Button>
+                            </div>
                         </div>
 
                         {isCustomAmount && (
                             <div>
-                                <Label htmlFor="custom-amount">Enter Amount (₹)</Label>
+                                <Label htmlFor="custom-amount" className="text-lg font-medium">Enter Amount (₹)</Label>
                                 <Input
                                     id="custom-amount"
                                     type="number"
@@ -280,35 +275,40 @@ export default function SupportUs() {
                                     onChange={(e) => setCustomAmount(e.target.value)}
                                     disabled={isFormDisabled}
                                     required
+                                    className="mt-2 p-3 border rounded-md w-full"
                                 />
                             </div>
                         )}
 
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full py-3 mt-6 text-xl font-semibold bg-green-500 text-white rounded-lg"
                             onClick={handlePayment}
                             disabled={isLoading || isFormDisabled}
                         >
                             {isLoading ? 'Processing...' : 'Donate Now'}
                         </Button>
                     </form>
+
+                    <p className="mt-4 text-center text-sm text-gray-500">
+                        Payments are securely processed through the Razorpay payment gateway.
+                    </p>
                 </div>
 
                 {showSuccess && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mt-4 p-4 bg-green-100 text-green-700 rounded-md"
+                        className="mt-6 p-4 bg-green-100 text-green-700 rounded-md"
                     >
                         Thank you for your donation! A confirmation email will be sent shortly.
                     </motion.div>
                 )}
 
-                <div className="mt-8 p-4 bg-green-100 text-green-700 rounded-md">
-                    <h3 className="text-lg font-semibold">Membership Program Coming Soon!</h3>
+                <div className="mt-8 p-4 bg-blue-100 text-blue-700 rounded-md">
+                    <h3 className="text-lg font-semibold">Join Our Membership Program</h3>
                     <p className="mt-2">
-                        We&apos;re excited to announce that a membership or subscription program will soon be available! Stay tuned for updates and become a part of our mission to make a difference.
+                         We will soon be offering membership options, giving you more ways to support our mission and stay involved.
                     </p>
                 </div>
             </div>

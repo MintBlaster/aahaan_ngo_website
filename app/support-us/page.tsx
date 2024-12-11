@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Script from 'next/script';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 // Constants
 const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
@@ -23,6 +24,7 @@ const DONATION_AMOUNTS = [
 const MINIMUM_DONATION_AMOUNT = 10;
 const DEFAULT_DONATION_AMOUNT = 1000;
 
+// Types
 interface RazorpayResponse {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -85,9 +87,13 @@ export default function SupportUs() {
     const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-    const generateReceiptId = (): string => `DONATION_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const generateReceiptId = (): string => {
+        return `DONATION_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    };
 
-    const validateEmail = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validateEmail = (email: string): boolean => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
 
     const validateForm = (): boolean => {
         if (!donorName.trim()) {
@@ -118,10 +124,15 @@ export default function SupportUs() {
         try {
             const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
 
+            // Create order
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: finalAmount }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: finalAmount,
+                }),
             });
 
             if (!orderResponse.ok) {
@@ -130,6 +141,7 @@ export default function SupportUs() {
 
             const orderData = (await orderResponse.json()) as OrderResponse;
 
+            // Initialize Razorpay payment
             const options: RazorpayOptions = {
                 key: RAZORPAY_KEY_ID,
                 amount: finalAmount * 100,
@@ -141,8 +153,14 @@ export default function SupportUs() {
                     try {
                         const verifyResponse = await fetch('/api/verify-payment', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(response),
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                            }),
                         });
 
                         if (!verifyResponse.ok) {
@@ -150,18 +168,32 @@ export default function SupportUs() {
                         }
 
                         setShowSuccess(true);
+                        setIsLoading(false);
+                        setIsFormDisabled(false);
                     } catch (error) {
                         console.error('Verification error:', error);
                         alert('Payment verification failed. Please contact support.');
-                    } finally {
                         setIsLoading(false);
                         setIsFormDisabled(false);
                     }
                 },
-                prefill: { name: donorName, email: donorEmail },
-                notes: { address: 'Your Address', receipt_id: generateReceiptId() },
-                theme: { color: '#059669' },
-                modal: { ondismiss: () => setIsFormDisabled(false) },
+                prefill: {
+                    name: donorName,
+                    email: donorEmail,
+                },
+                notes: {
+                    address: 'Your Address',
+                    receipt_id: generateReceiptId(),
+                },
+                theme: {
+                    color: '#059669',
+                },
+                modal: {
+                    ondismiss: () => {
+                        setIsLoading(false);
+                        setIsFormDisabled(false);
+                    },
+                },
             };
 
             const razorpay = new window.Razorpay(options);
@@ -169,7 +201,6 @@ export default function SupportUs() {
         } catch (error) {
             console.error('Payment error:', error);
             alert('Payment failed. Please try again or contact support.');
-        } finally {
             setIsLoading(false);
             setIsFormDisabled(false);
         }
@@ -180,11 +211,11 @@ export default function SupportUs() {
             <div className="max-w-md mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold text-gray-900">Support Our Cause</h2>
-                    <p className="mt-2 text-gray-600">Your contribution makes a difference.</p>
+                    <p className="mt-2 text-gray-600">Your contribution makes a difference</p>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-md">
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                    <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
                         <div>
                             <Label htmlFor="name">Name</Label>
                             <Input
@@ -278,8 +309,7 @@ export default function SupportUs() {
                 <div className="mt-8 p-4 bg-green-100 text-green-700 rounded-md">
                     <h3 className="text-lg font-semibold">Membership Program Coming Soon!</h3>
                     <p className="mt-2">
-                        We're excited to announce that a membership or subscription program will soon be available! Stay 
-                        tuned for updates and become a part of our mission to make a difference.
+                        We&apos;re excited to announce that a membership or subscription program will soon be available! Stay tuned for updates and become a part of our mission to make a difference.
                     </p>
                 </div>
             </div>

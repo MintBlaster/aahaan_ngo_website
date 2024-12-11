@@ -53,9 +53,12 @@ export default function Header() {
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
                         <NavLinks isScrolled={isScrolled} isHome={isHome} />
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
-                            Support Us
-                        </button>
+                        <Link href="/support-us">
+                            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
+                                Support Us
+                            </button>
+                        </Link>
+
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -85,9 +88,12 @@ export default function Header() {
                     <div className="bg-white rounded-lg shadow-lg mb-4">
                         <MobileNavLinks />
                         <div className="p-4">
-                            <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
-                                Support Us
-                            </button>
+                            <Link href="/support-us">
+                                <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
+                                    Support Us
+                                </button>
+                            </Link>
+
                         </div>
                     </div>
                 </div>

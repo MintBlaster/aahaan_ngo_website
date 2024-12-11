@@ -1,4 +1,3 @@
-// app/contact/page.tsx
 "use client"
 import { motion } from 'framer-motion';
 
@@ -9,9 +8,9 @@ export default function Contact() {
             <section className="bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 py-20">
                 <div className="container mx-auto px-4">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                        initial={{opacity: 0, y: 20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 0.8}}
                     >
                         <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">Contact Us</h1>
                         <p className="text-xl text-emerald-50 max-w-2xl">
@@ -79,16 +78,17 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-medium text-emerald-800 mb-2">Office Address</h3>
                                     <p className="text-emerald-600">
-                                        123 NGO Street<br />
-                                        Community Center, Floor 2<br />
-                                        City, State 12345
+                                        Thari Chaproli<br/>
+                                        Subathu, Solan<br/>
+                                        Himachal Pradesh, India<br/>
+                                        Pin Code 173206
                                     </p>
                                 </div>
                                 <div>
                                     <h3 className="font-medium text-emerald-800 mb-2">Contact Details</h3>
                                     <p className="text-emerald-600">
-                                        Email: info@aahaan.org<br />
-                                        Phone: (123) 456-7890<br />
+                                        Email: info@aahaan.org<br/>
+                                        Phone: (123) 456-7890<br/>
                                         Hours: Monday-Friday, 9:00 AM - 5:00 PM
                                     </p>
                                 </div>
@@ -119,10 +119,18 @@ export default function Contact() {
             </section>
 
             {/* Map Section */}
-            <section className="h-96 relative">
-                {/* Replace with actual map implementation */}
-                <div className="absolute inset-0 bg-emerald-100 flex items-center justify-center">
-                    <p className="text-emerald-600">Map placeholder</p>
+            <section
+                className="h-96 relative bg-gradient-to-br from-emerald-100 to-green-50 flex items-center justify-center">
+                <div
+                    className="w-11/12 h-full md:w-3/4 lg:w-2/3 overflow-hidden rounded-lg shadow-lg border-4 border-emerald-300">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6841.771395224111!2d76.9859646430215!3d30.973671797875287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390562a3c5b5ac93%3A0x5b72963e4937e0d!2sSubathu%2C%20Himachal%20Pradesh%20173206!5e0!3m2!1sen!2sin!4v1733849235265!5m2!1sen!2sin"
+                        width="100%"
+                        height="100%"
+                        allowFullScreen={true}
+                        loading="lazy"
+                        className="border-0"
+                    ></iframe>
                 </div>
             </section>
         </main>

@@ -31,7 +31,7 @@ export default function OurWork() {
                         <div className="bg-white rounded-lg overflow-hidden shadow-md">
                             <div className="relative h-64">
                                 <Image
-                                    src="/images/education-project.jpg"
+                                    src="/work/work5.jpg"
                                     alt="Education Initiative"
                                     fill
                                     className="object-cover"
@@ -66,7 +66,7 @@ export default function OurWork() {
                         <div className="bg-white rounded-lg overflow-hidden shadow-md">
                             <div className="relative h-64">
                                 <Image
-                                    src="/images/healthcare-project.jpg"
+                                    src="/images/Medical.jpg"
                                     alt="Healthcare Initiative"
                                     fill
                                     className="object-cover"

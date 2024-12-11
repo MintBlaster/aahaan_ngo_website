@@ -53,12 +53,12 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/services" className="hover:text-white transition-colors">
+                                <Link href="/our-work" className="hover:text-white transition-colors">
                                     Our Services
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/projects" className="hover:text-white transition-colors">
+                                <Link href="/initiatives" className="hover:text-white transition-colors">
                                     Projects
                                 </Link>
                             </li>
@@ -67,23 +67,28 @@ const Footer = () => {
                                     Contact Us
                                 </Link>
                             </li>
+                            <li>
+                                <Link href="/get-involved" className="hover:text-white transition-colors">
+                                    Get Involved
+                                </Link>
+                            </li>
                         </ul>
                     </motion.div>
 
                     {/* Contact Info */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{opacity: 0, y: 20}}
+                        whileInView={{opacity: 1, y: 0}}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="space-y-4"
                     >
                         <h3 className="text-white text-xl font-bold mb-4">Contact Us</h3>
                         <div className="space-y-2">
-                            <p>123 Development Way</p>
-                            <p>Sustainable City, SC 12345</p>
-                            <p>Phone: (123) 456-7890</p>
-                            <p>Email: info@example.com</p>
+                            <p>Thari Chaproli, Subathu</p>
+                            <p>Himachal Pradesh, India 173206</p>
+                            <p>Phone: +91 8265002008</p>
+                            <p>Email: info@aahaanngo.com</p>
                         </div>
                     </motion.div>
 
@@ -119,7 +124,7 @@ const Footer = () => {
                 <div className="container mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <p className="text-sm text-gray-400">
-                            © {new Date().getFullYear()} Your Company Name. All rights reserved.
+                            © {new Date().getFullYear()} Aahaan NGO. All rights reserved.
                         </p>
                         <div className="flex space-x-6 text-sm">
                             <Link href="/privacy" className="hover:text-white transition-colors">

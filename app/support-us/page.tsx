@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SiRazorpay } from 'react-icons/si'; // Import Razorpay icon from react-icons
+import { SiRazorpay } from 'react-icons/si';
 
 const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
 if (!RAZORPAY_KEY_ID) {
@@ -274,38 +274,29 @@ export default function SupportUs() {
                                     required
                                     className="mt-2 p-3 border rounded-md w-full"
                                 />
-)}
+                            </div>
+                        )}
 
                         <Button
                             type="submit"
                             className="w-full py-3 mt-6 text-xl font-semibold bg-green-500 text-white rounded-lg"
-                            onClick={handlePayment}
-                            disabled={isLoading || isFormDisabled}
+                            onClick={handlePayment} disabled={isLoading || isFormDisabled}
                         >
-                            {isLoading ? 'Processing...' : 'Donate Now'}
+                            {isLoading ? 'Processing Payment...' : 'Donate Now'}
                         </Button>
+
+                        {showSuccess && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="mt-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700"
+                            >
+                                <p className="text-lg font-semibold">Thank you for your donation!</p>
+                                <p>Your donation has been successfully processed. You will receive a confirmation email shortly.</p>
+                            </motion.div>
+                        )}
                     </form>
-
-                    <p className="mt-4 text-center text-sm text-gray-500">
-                        Payments are securely processed through the Razorpay payment gateway.
-                    </p>
-                </div>
-
-                {showSuccess && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mt-6 p-4 bg-green-100 text-green-700 rounded-md"
-                    >
-                        Thank you for your donation! A confirmation email will be sent shortly.
-                    </motion.div>
-                )}
-
-                <div className="mt-8 p-4 bg-blue-100 text-blue-700 rounded-md">
-                    <h3 className="text-lg font-semibold">Join Our Membership Program</h3>
-                    <p className="mt-2">
-                         We will soon be offering membership options, giving you more ways to support our mission and stay involved.
-                    </p>
                 </div>
             </div>
         </div>

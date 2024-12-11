@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SiRazorpay } from 'react-icons/si'; // Import Razorpay icon from react-icons
 
-// Constants
 const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
 if (!RAZORPAY_KEY_ID) {
     console.error('NEXT_PUBLIC_RAZORPAY_KEY_ID is not defined');
@@ -22,7 +22,6 @@ const DONATION_AMOUNTS = [
 const MINIMUM_DONATION_AMOUNT = 10;
 const DEFAULT_DONATION_AMOUNT = 1000;
 
-// Types
 interface RazorpayResponse {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -122,7 +121,6 @@ export default function SupportUs() {
         try {
             const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
 
-            // Create order
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: {
@@ -139,7 +137,6 @@ export default function SupportUs() {
 
             const orderData = (await orderResponse.json()) as OrderResponse;
 
-            // Initialize Razorpay payment
             const options: RazorpayOptions = {
                 key: RAZORPAY_KEY_ID,
                 amount: finalAmount * 100,
@@ -205,7 +202,7 @@ export default function SupportUs() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
             <div className="max-w-2xl mx-auto">
                 <div className="text-center mb-8">
                     <h2 className="text-4xl font-extrabold text-gray-900">Support Our Cause</h2>
@@ -277,8 +274,7 @@ export default function SupportUs() {
                                     required
                                     className="mt-2 p-3 border rounded-md w-full"
                                 />
-                            </div>
-                        )}
+)}
 
                         <Button
                             type="submit"

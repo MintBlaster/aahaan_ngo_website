@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Script from 'next/script';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

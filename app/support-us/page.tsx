@@ -1,347 +1,76 @@
 'use client';
 
-import React, { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { SiRazorpay } from 'react-icons/si';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { DonationForm } from "@/components/donation/DonationForm";
 
-// Constants
-const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
-const DONATION_AMOUNTS = [
-    { value: 500, label: '₹500' },
-    { value: 1000, label: '₹1,000' },
-    { value: 2000, label: '₹2,000' },
-    { value: 5000, label: '₹5,000' },
-];
-const MINIMUM_DONATION_AMOUNT = 10;
-const DEFAULT_DONATION_AMOUNT = 1000;
-
-// Type Definitions
-interface RazorpayResponse {
-    razorpay_payment_id: string;
-    razorpay_order_id: string;
-    razorpay_signature: string;
-}
-
-interface OrderResponse {
-    id: string;
-    amount: number;
-    currency: string;
-}
-
-interface RazorpayOptions {
-    key: string;
-    amount: number;
-    currency: string;
-    name: string;
-    description: string;
-    order_id: string;
-    handler: (response: RazorpayResponse) => void;
-    prefill: {
-        name: string;
-        email: string;
-    };
-    notes: {
-        address: string;
-        receipt_id: string;
-    };
-    theme: {
-        color: string;
-    };
-    modal: {
-        ondismiss: () => void;
-    };
-}
-
-interface RazorpayInstance {
-    open: () => void;
-    on: (event: string, callback: () => void) => void;
-    close: () => void;
-}
-
-interface RazorpayClass {
-    new (options: RazorpayOptions): RazorpayInstance;
-}
-
-declare global {
-    interface Window {
-        Razorpay: RazorpayClass;
-    }
-}
-
-export default function SupportUs(): React.JSX.Element {
-    // State Hooks
-    const [amount, setAmount] = useState<number>(DEFAULT_DONATION_AMOUNT);
-    const [customAmount, setCustomAmount] = useState<string>('');
-    const [isCustomAmount, setIsCustomAmount] = useState<boolean>(false);
-    const [donorName, setDonorName] = useState<string>('');
-    const [donorEmail, setDonorEmail] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false);
-    const [showSuccess, setShowSuccess] = useState<boolean>(false);
-
-    // Utility Functions
-    const generateReceiptId = (): string => {
-        return `DONATION_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    };
-
-    const validateEmail = (email: string): boolean => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
-
-    const validateForm = (): boolean => {
-        if (!donorName.trim()) {
-            alert('Please enter your name');
-            return false;
-        }
-
-        if (!donorEmail.trim() || !validateEmail(donorEmail)) {
-            alert('Please enter a valid email address');
-            return false;
-        }
-
-        const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
-        if (!finalAmount || finalAmount < MINIMUM_DONATION_AMOUNT) {
-            alert(`Please enter a valid amount (minimum ₹${MINIMUM_DONATION_AMOUNT})`);
-            return false;
-        }
-
-        return true;
-    };
-
-    // Payment Handling
-    const handlePayment = async (): Promise<void> => {
-        if (!validateForm()) return;
-
-        setIsLoading(true);
-        setIsFormDisabled(true);
-
-        try {
-            const finalAmount = isCustomAmount ? parseInt(customAmount, 10) : amount;
-
-            const orderResponse = await fetch('/api/create-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: finalAmount,
-                }),
-            });
-
-            if (!orderResponse.ok) {
-                throw new Error('Failed to create order');
-            }
-
-            const orderData = (await orderResponse.json()) as OrderResponse;
-
-            const options: RazorpayOptions = {
-                key: RAZORPAY_KEY_ID,
-                amount: finalAmount * 100,
-                currency: 'INR',
-                name: 'Aahaan NGO',
-                description: 'Donation',
-                order_id: orderData.id,
-                handler: async (response: RazorpayResponse) => {
-                    try {
-                        const verifyResponse = await fetch('/api/verify-payment', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature,
-                            }),
-                        });
-
-                        if (!verifyResponse.ok) {
-                            throw new Error('Payment verification failed');
-                        }
-
-                        setShowSuccess(true);
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    } catch (error) {
-                        console.error('Verification error:', error);
-                        alert('Payment verification failed. Please contact support.');
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    }
-                },
-                prefill: {
-                    name: donorName,
-                    email: donorEmail,
-                },
-                notes: {
-                    address: 'Aahaan NGO',
-                    receipt_id: generateReceiptId(),
-                },
-                theme: {
-                    color: '#059669',
-                },
-                modal: {
-                    ondismiss: () => {
-                        setIsLoading(false);
-                        setIsFormDisabled(false);
-                    },
-                },
-            };
-
-            const razorpay = new window.Razorpay(options);
-            razorpay.open();
-        } catch (error) {
-            console.error('Payment error:', error);
-            alert('Payment failed. Please try again or contact support.');
-            setIsLoading(false);
-            setIsFormDisabled(false);
-        }
-    };
-
-    // Prevent default form submission
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-    };
-
-    // Razorpay Key Validation
-    if (!RAZORPAY_KEY_ID) {
-        console.error('NEXT_PUBLIC_RAZORPAY_KEY_ID is not defined');
-        return <div className="text-red-500">Payment system is not configured correctly.</div>;
-    }
-
+export default function SupportPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-r from-green-200 via-green-300 to-orange-100 pt-24 px-4 sm:px-6 lg:px-8">
-            <motion.div 
-                className="max-w-3xl mx-auto" 
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Support Aahaan NGO</h2>
-                    <p className="text-xl md:text-2xl text-gray-700 max-w-2xl mx-auto">
-                        Your donation helps us bring positive change. Every contribution makes a difference in someone&apos;s life.
-                    </p>
+        <main className="pt-20">
+            {/* Header Section */}
+            <section className="bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 py-20">
+                <div className="container mx-auto px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">
+                            Support Our Mission
+                        </h1>
+                        <p className="text-xl text-emerald-50 max-w-2xl">
+                            Every contribution helps us create meaningful change and support communities in need.
+                        </p>
+                    </motion.div>
                 </div>
+            </section>
 
-                <div className="bg-white p-6 md:p-10 rounded-xl shadow-2xl space-y-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-4">
-                            <div>
-                                <Label htmlFor="name">Your Name</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    value={donorName}
-                                    onChange={(e) => setDonorName(e.target.value)}
-                                    disabled={isFormDisabled}
-                                    placeholder="Enter your full name"
-                                    className="mt-2"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="email">Email Address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={donorEmail}
-                                    onChange={(e) => setDonorEmail(e.target.value)}
-                                    disabled={isFormDisabled}
-                                    placeholder="Enter your email"
-                                    className="mt-2"
-                                />
-                            </div>
-                            <div>
-                                <Label>Donation Amount</Label>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {DONATION_AMOUNTS.map((donationAmount) => (
-                                        <Button
-                                            key={donationAmount.value}
-                                            type="button"
-                                            variant={amount === donationAmount.value && !isCustomAmount ? 'default' : 'outline'}
-                                            onClick={() => {
-                                                setAmount(donationAmount.value);
-                                                setIsCustomAmount(false);
-                                            }}
-                                            disabled={isFormDisabled}
-                                            className="text-sm"
-                                        >
-                                            {donationAmount.label}
-                                        </Button>
-                                    ))}
-                                    <Button
-                                        type="button"
-                                        variant={isCustomAmount ? 'default' : 'outline'}
-                                        onClick={() => setIsCustomAmount(true)}
-                                        disabled={isFormDisabled}
-                                        className="text-sm"
-                                    >
-                                        Custom
-                                    </Button>
-                                </div>
-                                {isCustomAmount && (
-                                    <div className="mt-2">
-                                        <Input
-                                            type="number"
-                                            value={customAmount}
-                                            onChange={(e) => setCustomAmount(e.target.value)}
-                                            disabled={isFormDisabled}
-                                            placeholder="Enter custom amount"
-                                            min={MINIMUM_DONATION_AMOUNT}
-                                        />
-                                    </div>
-                                )}
+            {/* Donation Section */}
+            <section className="py-16 bg-white">
+                <div className="container mx-auto px-4">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        {/* Donation Explanation - Left Side */}
+                        <div className="pr-8">
+                            <h2 className="text-3xl font-serif text-emerald-900 mb-6">
+                                Make a Meaningful Contribution
+                            </h2>
+                            <p className="text-emerald-700 mb-4 text-lg">
+                                Your donation directly supports our ongoing initiatives and helps create sustainable change in communities.
+                            </p>
+                            <ul className="list-disc list-inside text-emerald-600 space-y-2 mb-6">
+                                <li>100% Transparent Funding</li>
+                                <li>Tax Deductible Donations</li>
+                                <li>Secure Online Payment</li>
+                                <li>Recurring Donation Options</li>
+                            </ul>
+                            <div className="bg-emerald-50 p-4 rounded-lg">
+                                <p className="text-emerald-800 italic">
+                                    &#34;Every donation, no matter the size, creates a ripple effect of positive change in communities.&#34;
+                                </p>
                             </div>
                         </div>
 
-                        <Button
-                            type="submit"
-                            onClick={handlePayment}
-                            disabled={isLoading || isFormDisabled}
-                            className="w-full flex items-center justify-center"
-                        >
-                            {isLoading ? (
-                                'Processing...'
-                            ) : (
-                                <>
-                                    <SiRazorpay className="mr-2" />
-                                    Donate Now
-                                </>
-                            )}
-                        </Button>
-                    </form>
-
-                    {showSuccess && (
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.3 }}
-                            className="mt-6 bg-green-100 text-green-700 p-6 rounded-lg text-center"
-                        >
-                            <h3 className="text-2xl font-semibold mb-2">Thank you for your donation!</h3>
-                            <p className="text-base">
-                                Your support helps us continue our mission. We deeply appreciate your generosity and compassion.
-                            </p>
-                            <p className="mt-2 text-sm text-green-600">
-                                A receipt will be sent to your email shortly.
-                            </p>
-                        </motion.div>
-                    )}
+                        {/* Donation Form - Right Side */}
+                        <div className="bg-emerald-50 rounded-xl shadow-lg p-8">
+                            <h3 className="text-2xl font-serif text-emerald-900 mb-6 text-center">
+                                Donate Now
+                            </h3>
+                            <DonationForm />
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                {/* Membership Information Section */}
-                <div className="mt-8 bg-gray-100 p-6 rounded-xl text-center">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-3">Membership Coming Soon</h3>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        We are developing membership options for individuals who want to stay consistently involved with our mission. 
-                        Future membership will include recurring donation capabilities and direct engagement with our work.
+            {/* Call to Action */}
+            <section className="py-16 bg-gradient-to-br from-emerald-700 to-emerald-600">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-3xl font-serif text-white mb-6">
+                        Together, We Can Make a Difference
+                    </h2>
+                    <p className="text-emerald-50 mb-8 max-w-2xl mx-auto">
+                        Every contribution, big or small, helps us continue our mission of creating positive change.
                     </p>
                 </div>
-            </motion.div>
-        </div>
+            </section>
+        </main>
     );
 }

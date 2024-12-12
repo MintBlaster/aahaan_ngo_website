@@ -1,6 +1,7 @@
 // components/Impact.tsx
 "use client"
 import { motion } from 'framer-motion';
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface ImpactStat {
     number: string;
@@ -96,10 +97,11 @@ const Impact = ({ content }: { content: ImpactContent }) => {
                             transition={{ duration: 0.8, delay: index * 0.2 }}
                         >
                             <div className="relative h-48 overflow-hidden">
-                                <img
+                                <OptimizedImage
                                     src={highlight.image}
                                     alt={highlight.title}
-                                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                                    fill
+                                    className="transform hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
                             <div className="p-6">

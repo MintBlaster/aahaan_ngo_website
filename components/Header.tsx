@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
+import OptimizedImage from "@/components/OptimizedImage";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,10 +32,13 @@ export default function Header() {
                         href="/"
                         className="flex items-center space-x-3"
                     >
-                        <img
+                        <OptimizedImage
                             src="/globe.svg"
                             alt="Aahaan NGO Logo"
+                            width={48}
+                            height={48}
                             className="h-12 w-auto"
+                            priority
                         />
                         <div className="flex flex-col">
                             <span className={`font-serif text-xl font-bold ${

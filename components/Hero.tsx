@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
+import OptimizedImage from '@/components/OptimizedImage';
 
 interface HeroContent {
     title: string;
@@ -21,7 +22,6 @@ const Hero = ({ content }: { content: HeroContent }) => {
         }
     };
 
-    // Prevent default anchor click behavior
     useEffect(() => {
         const handleLinkClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -40,52 +40,39 @@ const Hero = ({ content }: { content: HeroContent }) => {
         <section className="relative h-screen w-full overflow-hidden">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0">
-                <img
+                <OptimizedImage
                     src={content.backgroundImage}
                     alt="Rural development impact"
-                    className="w-full h-full object-cover"
+                    fill
+                    priority
+                    overlay
+                    className="z-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50" />
             </div>
 
             {/* Main Content */}
             <div className="relative h-full flex items-center">
                 <div className="container mx-auto px-4">
-                    <motion.div
-                        className="max-w-4xl"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
+                    <div className="max-w-4xl">
                         {/* Decorative Element */}
-                        <div className="w-20 h-1 bg-green-500 mb-8" />
+                        <div className="w-20 h-1 bg-green-500 mb-8"/>
 
                         {/* Title */}
-                        <motion.h1
-                            className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
+                        <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">
                             {content.title}
-                        </motion.h1>
+                        </h1>
 
                         {/* Subtitle */}
-                        <motion.p
-                            className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl leading-relaxed"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                        >
+                        <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl leading-relaxed">
                             {content.subtitle}
-                        </motion.p>
+                        </p>
 
                         {/* Call to Action Buttons */}
                         <motion.div
                             className="flex flex-wrap gap-4"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{duration: 0.5}}
                         >
                             <button
                                 onClick={() => scrollToSection('join-us')}
@@ -117,9 +104,9 @@ const Hero = ({ content }: { content: HeroContent }) => {
                         {/* Stats */}
                         <motion.div
                             className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{duration: 0.5, delay: 0.2}}
                         >
                             <div className="text-white">
                                 <div className="text-3xl font-bold mb-1">1000+</div>
@@ -134,18 +121,18 @@ const Hero = ({ content }: { content: HeroContent }) => {
                                 <div className="text-white/80">Active Programs</div>
                             </div>
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
 
             {/* Scroll Indicator */}
             <motion.div
                 className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+                animate={{y: [0, 10, 0]}}
+                transition={{duration: 1.5, repeat: Infinity}}
             >
                 <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-                    <div className="w-1 h-3 bg-white rounded-full mt-2" />
+                    <div className="w-1 h-3 bg-white rounded-full mt-2"/>
                 </div>
             </motion.div>
         </section>

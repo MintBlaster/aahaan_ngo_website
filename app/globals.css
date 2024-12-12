@@ -14,11 +14,45 @@
   font-weight: 400;
 }
 
-body {
+/* Base Styles */
+@layer base {
+  /* Base Font Settings */
+  html {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
   font-family: 'Poppins', sans-serif;
+  }
+
+  /* Global Layout Styles */
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-/* Custom Color Variables */
+/* Font Loading States */
+@layer components {
+  .font-loading {
+    @apply invisible;
+  }
+
+  .fonts-loaded {
+    @apply visible;
+  }
+
+  /* Performance Optimized Animations */
+  .animate-safe {
+    @apply motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-none;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -77,17 +111,6 @@ body {
   }
 }
 
-/* Global Layout Styles */
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 /* Adding Outlines and Shadows to Various Elements */
 @layer components {
   .card, .button, .image-container {
@@ -99,13 +122,55 @@ body {
   }
 }
 
+/* Utilities */
 @layer utilities {
+  /* Scrollbar Utilities */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Font Performance Utilities */
+  .optimize-legibility {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Performance Optimizations */
+  .content-visibility-auto {
+    content-visibility: auto;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
 }
 
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

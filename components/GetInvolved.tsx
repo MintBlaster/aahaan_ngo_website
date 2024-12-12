@@ -1,6 +1,7 @@
 // components/GetInvolved.tsx
 "use client"
 import { motion } from 'framer-motion';
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface InvolvementOption {
     title: string;
@@ -47,10 +48,12 @@ const GetInvolved = ({ content }: { content: GetInvolvedContent }) => {
                             transition={{ duration: 0.8, delay: index * 0.2 }}
                         >
                             <div className="relative h-96">
-                                <img
+                                <OptimizedImage
                                     src={option.image}
                                     alt={option.title}
-                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    fill
+                                    className="transition-transform duration-300 group-hover:scale-110"
+                                    overlay
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                                 <div className="absolute bottom-0 p-6 text-white">

@@ -1,5 +1,6 @@
 // components/About.tsx
 import { motion } from 'framer-motion';
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface AboutContent {
     title: string;
@@ -65,10 +66,13 @@ const About = ({ content }: { content: AboutContent }) => {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="relative z-10">
-                            <img
+                            <OptimizedImage
                                 src={content.image}
                                 alt="About Us"
+                                width={800}
+                                height={600}
                                 className="rounded-lg shadow-xl w-full h-[600px] object-cover"
+                                priority
                             />
                         </div>
                         <div className="absolute -bottom-6 -right-6 w-full h-full border-4 border-green-500 rounded-lg z-0" />

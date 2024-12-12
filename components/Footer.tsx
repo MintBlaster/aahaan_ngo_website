@@ -22,27 +22,51 @@ const Footer = () => {
                             Empowering communities through sustainable development and innovative solutions.
                         </p>
                         <div className="flex space-x-4 pt-4">
-                            <a href="https://facebook.com" className="hover:text-white transition-colors">
-                                <FaFacebookF size={20} />
+                            <a
+                                href="https://facebook.com"
+                                className="hover:text-white transition-colors"
+                                aria-label="Visit our Facebook page"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <FaFacebookF size={20}/>
                             </a>
-                            <a href="https://x.com" className="hover:text-white transition-colors">
-                                <FaTwitter size={20} />
+                            <a
+                                href="https://x.com"
+                                className="hover:text-white transition-colors"
+                                aria-label="Follow us on X (formerly Twitter)"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <FaTwitter size={20}/>
                             </a>
-                            <a href="https://instagram.com" className="hover:text-white transition-colors">
-                                <FaInstagram size={20} />
+                            <a
+                                href="https://instagram.com"
+                                className="hover:text-white transition-colors"
+                                aria-label="Follow us on Instagram"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <FaInstagram size={20}/>
                             </a>
-                            <a href="https://whatsapp.com" className="hover:text-white transition-colors">
-                                <FaWhatsapp size={20} />
+                            <a
+                                href="https://whatsapp.com"
+                                className="hover:text-white transition-colors"
+                                aria-label="Contact us on WhatsApp"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <FaWhatsapp size={20}/>
                             </a>
                         </div>
                     </motion.div>
 
                     {/* Quick Links */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        initial={{opacity: 0, y: 20}}
+                        whileInView={{opacity: 1, y: 0}}
+                        viewport={{once: true}}
+                        transition={{duration: 0.8, delay: 0.2}}
                         className="space-y-4"
                     >
                         <h3 className="text-white text-xl font-bold mb-4">Quick Links</h3>
@@ -53,7 +77,7 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/our-work" className="hover:text-white transition-colors">
+                            <Link href="/our-work" className="hover:text-white transition-colors">
                                     Our Services
                                 </Link>
                             </li>

@@ -1,0 +1,7 @@
+// public/.well-known/security.txt
+Contact: mailto:security@aahaan.org
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://aahaan.org/pgp-key.txt
+Preferred-Languages: en
+Canonical: https://aahaan.org/.well-known/security.txt
+Policy: https://aahaan.org/security-policy

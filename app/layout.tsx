@@ -25,7 +25,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.Aahan.org'),
+  metadataBase: new URL('https://www.aahanngo.org'),
   title: {
     default: 'Aahan NGO – Empowering Rural Communities in Himachal Pradesh',
     template: '%s | Aahan NGO'
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://www.Aahan.org',
+    url: 'https://www.aahanngo.org',
     siteName: 'Aahan NGO',
     title: 'Aahan NGO – Transforming Rural Lives in Himachal Pradesh',
     description: 'Join Aahan NGO in our mission to empower rural communities through sustainable development, healthcare, and education initiatives.',
@@ -90,10 +90,10 @@ export const metadata: Metadata = {
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
   },
   alternates: {
-    canonical: 'https://www.Aahan.org',
+    canonical: 'https://www.aahanngo.org\'',
     languages: {
-      'en-US': 'https://www.Aahan.org/en-US',
-      'hi-IN': 'https://www.Aahan.org/hi',
+      'en-US': '\'https://www.aahanngo.org\'',
+      'hi-IN': '\'https://www.aahanngo.org\'',
     },
   },
 };
@@ -103,8 +103,8 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "NGO",
   name: "Aahan NGO",
-  url: "https://www.Aahan.org",
-  logo: "https://www.Aahan.org/logo.png",
+  url: "https://www.aahanngo.org",
+  logo: "https://www.aahanngo.org/logo.png",
   sameAs: [
     "https://www.facebook.com/Aahanngo",
     "https://twitter.com/Aahanngo",

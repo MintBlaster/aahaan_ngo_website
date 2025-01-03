@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: `Thank You for Your Transformative Support - Aahaan NGO`,
+            subject: `Thank You for Your Transformative Support - Aahan NGO`,
             html: EmailTemplate({
                 name,
                 email,

@@ -25,12 +25,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.aahaan.org'),
+  metadataBase: new URL('https://www.Aahan.org'),
   title: {
-    default: 'Aahaan NGO – Empowering Rural Communities in Himachal Pradesh',
-    template: '%s | Aahaan NGO'
+    default: 'Aahan NGO – Empowering Rural Communities in Himachal Pradesh',
+    template: '%s | Aahan NGO'
   },
-  description: 'Aahaan NGO transforms rural communities through healthcare, education, and sustainable development initiatives in Himachal Pradesh. Join us in creating lasting change.',
+  description: 'Aahan NGO transforms rural communities through healthcare, education, and sustainable development initiatives in Himachal Pradesh. Join us in creating lasting change.',
   keywords: [
     'Rural Development NGO',
     'Himachal Pradesh NGO',
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     'Farmer Support',
     'Women Empowerment'
   ],
-  authors: [{ name: 'Aahaan NGO' }],
-  creator: 'Aahaan NGO',
-  publisher: 'Aahaan NGO',
+  authors: [{ name: 'Aahan NGO' }],
+  creator: 'Aahan NGO',
+  publisher: 'Aahan NGO',
   formatDetection: {
     email: false,
     address: false,
@@ -54,24 +54,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://www.aahaan.org',
-    siteName: 'Aahaan NGO',
-    title: 'Aahaan NGO – Transforming Rural Lives in Himachal Pradesh',
-    description: 'Join Aahaan NGO in our mission to empower rural communities through sustainable development, healthcare, and education initiatives.',
+    url: 'https://www.Aahan.org',
+    siteName: 'Aahan NGO',
+    title: 'Aahan NGO – Transforming Rural Lives in Himachal Pradesh',
+    description: 'Join Aahan NGO in our mission to empower rural communities through sustainable development, healthcare, and education initiatives.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Aahaan NGO - Empowering Rural Communities',
+        alt: 'Aahan NGO - Empowering Rural Communities',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aahaan NGO – Rural Development in Himachal Pradesh',
+    title: 'Aahan NGO – Rural Development in Himachal Pradesh',
     description: 'Transforming rural communities through sustainable development initiatives.',
-    creator: '@aahaanngo',
+    creator: '@Aahanngo',
     images: ['/twitter-image.jpg'],
   },
   robots: {
@@ -90,10 +90,10 @@ export const metadata: Metadata = {
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
   },
   alternates: {
-    canonical: 'https://www.aahaan.org',
+    canonical: 'https://www.Aahan.org',
     languages: {
-      'en-US': 'https://www.aahaan.org/en-US',
-      'hi-IN': 'https://www.aahaan.org/hi',
+      'en-US': 'https://www.Aahan.org/en-US',
+      'hi-IN': 'https://www.Aahan.org/hi',
     },
   },
 };
@@ -102,20 +102,20 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "NGO",
-  name: "Aahaan NGO",
-  url: "https://www.aahaan.org",
-  logo: "https://www.aahaan.org/logo.png",
+  name: "Aahan NGO",
+  url: "https://www.Aahan.org",
+  logo: "https://www.Aahan.org/logo.png",
   sameAs: [
-    "https://www.facebook.com/aahaanngo",
-    "https://twitter.com/aahaanngo",
-    "https://www.linkedin.com/company/aahaan-ngo"
+    "https://www.facebook.com/Aahanngo",
+    "https://twitter.com/Aahanngo",
+    "https://www.linkedin.com/company/Aahan-ngo"
   ],
   address: {
     "@type": "PostalAddress",
     addressCountry: "IN",
     addressRegion: "Himachal Pradesh"
   },
-  description: "Aahaan NGO transforms rural communities through healthcare, education, and sustainable development initiatives in Himachal Pradesh."
+  description: "Aahan NGO transforms rural communities through healthcare, education, and sustainable development initiatives in Himachal Pradesh."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

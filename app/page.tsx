@@ -8,7 +8,7 @@ import { content } from "@/data/content";
 
 export default function Home() {
     return (
-        <main className="bg-stone-50">
+        <main className="bg-emerald-50">
             <Hero content={content.hero} />
             <Mission content={content.mission} />
             <FocusAreas content={content.focus} />

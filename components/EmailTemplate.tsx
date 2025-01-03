@@ -123,7 +123,7 @@ export function EmailTemplate({
             <div class="content">
                 <p>Dear ${name},</p>
 
-                <p>We are profoundly grateful for your kind donation of <strong>₹${amount.toLocaleString()}</strong> to Aahaan NGO. Your generosity is a testament to your commitment to making the world a better place.</p>
+                <p>We are profoundly grateful for your kind donation of <strong>₹${amount.toLocaleString()}</strong> to Aahan NGO. Your generosity is a testament to your commitment to making the world a better place.</p>
 
                 <div class="impact">
                     <h3>Your Impact Matters</h3>
@@ -143,16 +143,16 @@ export function EmailTemplate({
                     <li><strong>Email:</strong> ${obfuscateEmail(email)}</li>
                 </ul>
 
-                <a href="https://www.aahaan.org/impact" class="cta">See the Impact of Your Support</a>
+                <a href="https://www.Aahan.org/our-programme" class="cta">See the Impact of Your Support</a>
 
                 <p>Every contribution, big or small, creates a ripple effect of positive change. Thank you for being part of our journey to bring hope and joy to countless lives.</p>
             </div>
 
             <div class="footer">
-                <p>With heartfelt gratitude,<br>The Aahaan NGO Team</p>
+                <p>With heartfelt gratitude,<br>The Aahan NGO Team</p>
                 <p>Stay connected with us on
-                    <a href="https://www.facebook.com/aahaan">Facebook</a> |
-                    <a href="https://www.instagram.com/aahaan">Instagram</a>
+                    <a href="https://www.facebook.com/Aahan">Facebook</a> |
+                    <a href="https://www.instagram.com/Aahan">Instagram</a>
                 </p>
             </div>
         </div>

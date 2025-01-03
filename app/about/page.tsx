@@ -8,18 +8,15 @@ export default function About() {
     return (
         <main className="pt-20">
             {/* Hero Section - New gradient background without image dependency */}
-            <section className="relative h-[60vh] min-h-[400px] bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600">
-                <div className="relative container mx-auto px-4 h-full flex items-center">
+            <section className="bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 py-20">
+                <div className="container mx-auto px-4">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="max-w-2xl"
+                        initial={{opacity: 0, y: 20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 0.8}}
                     >
-                        <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">
-                            About Aahaan
-                        </h1>
-                        <p className="text-xl text-emerald-50">
+                        <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">About Aahan</h1>
+                        <p className="text-xl text-emerald-50 max-w-2xl">
                             Empowering communities through sustainable development and
                             positive social change.
                         </p>
@@ -107,10 +104,10 @@ export default function About() {
                         your support helps us create lasting change.
                     </p>
                     <Link href="/get-involved">
-                    <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
+                        <button className="bg-white text-emerald-700 px-8 py-3 rounded-md font-medium
                                      hover:bg-emerald-50 transition-colors shadow-lg">
-                        Get Involved
-                    </button>
+                            Get Involved
+                        </button>
                     </Link>
                 </div>
             </section>

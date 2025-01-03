@@ -19,12 +19,12 @@ export function ReceiptModal({ isOpen, onClose, donationData }: ReceiptModalProp
         // Header section
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
-        doc.text('Aahaan NGO', 105, 20, { align: 'center' });
+        doc.text('Aahan NGO', 105, 20, { align: 'center' });
 
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.text('123 Charity Lane, Hope City, IN 110011', 105, 27, { align: 'center' });
-        doc.text('Phone: +91 12345 67890 | Email: support@aahaan.org', 105, 32, { align: 'center' });
+        doc.text('Village Nagar, Kunihar, Solan, H.P., IN 173207', 105, 27, { align: 'center' });
+        doc.text('Phone: +91 94592 44849 | Email: aahanngo.org', 105, 32, { align: 'center' });
         doc.line(20, 35, 190, 35); // Divider line
 
         // Title
@@ -72,7 +72,7 @@ export function ReceiptModal({ isOpen, onClose, donationData }: ReceiptModalProp
         doc.line(20, pageHeight - 30, 190, pageHeight - 30); // Divider line
         doc.setFontSize(10);
         doc.setTextColor(100);
-        doc.text('For any queries, contact us at support@aahaan.org or call +91 12345 67890.', 105, pageHeight - 20, {
+        doc.text('For any queries, contact us at aahanngo.org or call +91 94592 44849.', 105, pageHeight - 20, {
             align: 'center',
         });
         doc.text('Visit us at www.aahaan.org', 105, pageHeight - 15, { align: 'center' });

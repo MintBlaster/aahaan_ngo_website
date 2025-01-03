@@ -78,18 +78,33 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-medium text-emerald-800 mb-2">Office Address</h3>
                                     <p className="text-emerald-600">
-                                        Thari Chaproli<br/>
-                                        Subathu, Solan<br/>
-                                        Himachal Pradesh, India<br/>
-                                        Pin Code 173206
+                                        Village Nagar<br/>
+                                        Post office Kunihar<br/>
+                                        Solan, Himachal Pradesh<br/>
+                                        India - 173206
                                     </p>
+                                    <a
+                                        href="https://www.google.com/maps/place/Nagar+Village/@31.0828439,76.9783437,17.25z/data=!4m15!1m8!3m7!1s0x3905645e26c2bfc3:0xae6caf35425b0ee4!2sKunihar,+Himachal+Pradesh+173207!3b1!8m2!3d31.0795387!4d76.9614255!16s%2Fm%2F04n1g8x!3m5!1s0x390565005f326f31:0x6069968aeaf22b0c!8m2!3d31.083508!4d76.979004!16s%2Fg%2F11y98hgvx1?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center mt-2 text-emerald-600 hover:text-emerald-700"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                        Open in Google Maps
+                                    </a>
                                 </div>
+
                                 <div>
                                     <h3 className="font-medium text-emerald-800 mb-2">Contact Details</h3>
                                     <p className="text-emerald-600">
-                                        Email: info@aahaan.org<br/>
-                                        Phone: (123) 456-7890<br/>
-                                        Hours: Monday-Friday, 9:00 AM - 5:00 PM
+                                        Email: aahanngo@gmail.com<br/>
+                                        Phone: 9459244849
                                     </p>
                                 </div>
                                 <div>
@@ -115,22 +130,6 @@ export default function Contact() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            {/* Map Section */}
-            <section
-                className="h-96 relative bg-gradient-to-br from-emerald-100 to-green-50 flex items-center justify-center">
-                <div
-                    className="w-11/12 h-full md:w-3/4 lg:w-2/3 overflow-hidden rounded-lg shadow-lg border-4 border-emerald-300">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6841.771395224111!2d76.9859646430215!3d30.973671797875287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390562a3c5b5ac93%3A0x5b72963e4937e0d!2sSubathu%2C%20Himachal%20Pradesh%20173206!5e0!3m2!1sen!2sin!4v1733849235265!5m2!1sen!2sin"
-                        width="100%"
-                        height="100%"
-                        allowFullScreen={true}
-                        loading="lazy"
-                        className="border-0"
-                    ></iframe>
                 </div>
             </section>
         </main>

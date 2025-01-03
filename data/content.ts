@@ -1,7 +1,7 @@
 // content/index.ts
 export const content = {
     siteInfo: {
-        name: "Aahaan NGO",
+        name: "Aahan NGO",
         tagline: "Empowering Rural Communities",
         logo: "/globe.svg"
     },
@@ -49,7 +49,7 @@ export const content = {
         ],
         founderNote: {
             title: "INTRODUCTION FROM THE FOUNDER",
-            text: "Our mission and vision is unique and vast. Aahaan NGO carries out hope amongst the rural people residing at the far off, untouched and difficult terrain of Himachal Pradesh. We aim to address health issues, social malpractices, gender sensitization, women equality, child abuse, female infanticide, caste system, child labor, and upliftment of backward & minority classes.",
+            text: "Our mission and vision is unique and vast. Aahan NGO carries out hope amongst the rural people residing at the far off, untouched and difficult terrain of Himachal Pradesh. We aim to address health issues, social malpractices, gender sensitization, women equality, child abuse, female infanticide, caste system, child labor, and upliftment of backward & minority classes.",
             image: "/images/founder.jpg"
         }
     },
@@ -152,13 +152,13 @@ export const content = {
         contact: {
             address: "123 Development Way, Shimla, Himachal Pradesh",
             phone: "+91 1234567890",
-            email: "info@aahaan.org"
+            email: "info@Aahan.org"
         },
         socialLinks: {
-            facebook: "https://facebook.com/aahaanngo",
-            twitter: "https://twitter.com/aahaanngo",
-            instagram: "https://instagram.com/aahaanngo",
-            linkedin: "https://linkedin.com/company/aahaanngo"
+            facebook: "https://facebook.com/Aahanngo",
+            twitter: "https://twitter.com/Aahanngo",
+            instagram: "https://instagram.com/Aahanngo",
+            linkedin: "https://linkedin.com/company/Aahanngo"
         },
         quickLinks: [
             { title: "About Us", href: "/about" },

@@ -23,7 +23,7 @@ export default function Header() {
 
     return (
         <header className={`fixed w-full z-50 transition-all duration-300 ${
-            isScrolled || !isHome ? 'bg-white shadow-md' : 'bg-transparent'
+            isScrolled || !isHome ? 'bg-emerald-50 shadow-md' : 'bg-transparent'
         }`}>
             <div className="container mx-auto px-4">
                 <nav className="flex items-center justify-between h-20">
@@ -34,7 +34,7 @@ export default function Header() {
                     >
                         <OptimizedImage
                             src="/globe.svg"
-                            alt="Aahaan NGO Logo"
+                            alt="Aahan NGO Logo"
                             width={48}
                             height={48}
                             className="h-12 w-auto"
@@ -44,12 +44,12 @@ export default function Header() {
                             <span className={`font-serif text-xl font-bold ${
                                 isScrolled || !isHome ? 'text-gray-900' : 'text-white'
                             }`}>
-                                Aahaan
+                                Aahan
                             </span>
-                            <span className={`text-sm ${
+                            <span className={`text-xs ${
                                 isScrolled || !isHome ? 'text-gray-600' : 'text-white/80'
                             }`}>
-                                NGO
+                                Aspring Aid For Humanity and Nature
                             </span>
                         </div>
                     </Link>
@@ -118,7 +118,7 @@ const NavLinks = ({ isScrolled, isHome }: NavLinksProps) => {
 
     const links = [
         ['About Us', '/about'],
-        ['Our Work', '/our-work'],
+        ['Our Programme', '/our-programme'],
         ['Initiatives', '/initiatives'],
         ['Get Involved', '/get-involved'],
         ['Contact', '/contact'],

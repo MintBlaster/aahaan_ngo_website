@@ -109,11 +109,11 @@ const Footer = () => {
                     >
                         <h3 className="text-white text-xl font-bold mb-4">Contact Us</h3>
                         <div className="space-y-2">
-                            <p>Thari Chaproli, Subathu</p>
+                            <p>Village Nagar, Kunihar</p>
                             <p>Himachal Pradesh, India 173206</p>
                             <br />
-                            <p>Phone: +91 8265002008</p>
-                            <p>Email: info@aahaanngo.com</p>
+                            <p>Phone: +91 9459244849</p>
+                            <p>Email: aahanngo@gmail.com</p>
                         </div>
                     </motion.div>
 
@@ -149,7 +149,7 @@ const Footer = () => {
                 <div className="container mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                         <p className="text-sm text-gray-400">
-                            © {new Date().getFullYear()} Aahaan NGO. All rights reserved.
+                            © {new Date().getFullYear()} Aahan NGO. All rights reserved.
                         </p>
                         <div className="flex space-x-6 text-sm">
                             <Link href="/privacy" className="hover:text-white transition-colors">

@@ -23,7 +23,7 @@ const Mission = ({ content }: { content: MissionContent }) => {
     if (!content) return null;
 
     return (
-        <section id="mission" className="py-20 bg-gray-50">
+        <section id="mission" className="py-20">
             <div className="container mx-auto px-4">
                 <motion.div
                     className="text-center mb-16"

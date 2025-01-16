@@ -66,7 +66,7 @@ export default function PrivacyPolicy() {
                                         <div>
                                             <h3 className="font-medium mb-1 text-emerald-900">Processing Donations</h3>
                                             <p className="text-emerald-700 text-sm">
-                                                To process your donations and send receipts through Razorpay's secure platform.
+                                                To process your donations and send receipts through Razorpay&#39;s secure platform.
                                             </p>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@ export default function PrivacyPolicy() {
                                         <div>
                                             <h3 className="font-medium mb-1 text-emerald-900">Communications</h3>
                                             <p className="text-emerald-700 text-sm">
-                                                To send newsletters and updates if you've subscribed to them.
+                                                To send newsletters and updates if you&#39;ve subscribed to them.
                                             </p>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@ export default function PrivacyPolicy() {
                             <div>
                                 <h2 className="text-3xl font-serif mb-6 text-emerald-900">4. Data Security</h2>
                                 <p className="text-emerald-800 mb-6">
-                                    We implement appropriate security measures to protect your personal information. All payment processing is handled through Razorpay's secure, PCI-DSS compliant platform.
+                                    We implement appropriate security measures to protect your personal information. All payment processing is handled through Razorpay&#39;s secure, PCI-DSS compliant platform.
                                 </p>
                             </div>
 

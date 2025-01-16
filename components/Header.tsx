@@ -138,7 +138,7 @@ const NavLinks = ({ isScrolled, isHome }: NavLinksProps) => {
 const MobileNavLinks = () => {
     const links = [
         ['About Us', '/about'],
-        ['Our Work', '/our-work'],
+        ['Our Programme', '/our-programme'],
         ['Initiatives', '/initiatives'],
         ['Get Involved', '/get-involved'],
         ['Contact', '/contact'],

@@ -77,8 +77,8 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                            <Link href="/our-work" className="hover:text-white transition-colors">
-                                    Our Services
+                            <Link href="/our-programme" className="hover:text-white transition-colors">
+                                    Our Programme
                                 </Link>
                             </li>
                             <li>
@@ -113,7 +113,7 @@ const Footer = () => {
                             <p>Himachal Pradesh, India 173206</p>
                             <br />
                             <p>Phone: +91 9459244849</p>
-                            <p>Email: aahanngo@gmail.com</p>
+                            <p>Email: support@aahanngo.org</p>
                         </div>
                     </motion.div>
 

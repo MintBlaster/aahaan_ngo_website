@@ -14,9 +14,11 @@ export async function POST(request: Request) {
             donationType = 'General Support'
         } = body;
 
-        // Email Configuration
+        // Email Configuration for Zoho Mail
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.zoho.com',
+            port: 465, // Use port 465 for secure connection
+            secure: true, // True for SSL
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS

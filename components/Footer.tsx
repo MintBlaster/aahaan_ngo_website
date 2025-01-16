@@ -22,35 +22,35 @@ const Footer = () => {
                             Empowering communities through sustainable development and innovative solutions.
                         </p>
                         <div className="flex space-x-4 pt-4">
+                            {/*<a*/}
+                            {/*    href="https://facebook.com"*/}
+                            {/*    className="hover:text-white transition-colors"*/}
+                            {/*    aria-label="Visit our Facebook page"*/}
+                            {/*    target="_blank"*/}
+                            {/*    rel="noopener noreferrer"*/}
+                            {/*>*/}
+                            {/*    <FaFacebookF size={20}/>*/}
+                            {/*</a>*/}
+                            {/*<a*/}
+                            {/*    href="https://x.com"*/}
+                            {/*    className="hover:text-white transition-colors"*/}
+                            {/*    aria-label="Follow us on X (formerly Twitter)"*/}
+                            {/*    target="_blank"*/}
+                            {/*    rel="noopener noreferrer"*/}
+                            {/*>*/}
+                            {/*    <FaTwitter size={20}/>*/}
+                            {/*</a>*/}
+                            {/*<a*/}
+                            {/*    href="https://instagram.com"*/}
+                            {/*    className="hover:text-white transition-colors"*/}
+                            {/*    aria-label="Follow us on Instagram"*/}
+                            {/*    target="_blank"*/}
+                            {/*    rel="noopener noreferrer"*/}
+                            {/*>*/}
+                            {/*    <FaInstagram size={20}/>*/}
+                            {/*</a>*/}
                             <a
-                                href="https://facebook.com"
-                                className="hover:text-white transition-colors"
-                                aria-label="Visit our Facebook page"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaFacebookF size={20}/>
-                            </a>
-                            <a
-                                href="https://x.com"
-                                className="hover:text-white transition-colors"
-                                aria-label="Follow us on X (formerly Twitter)"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaTwitter size={20}/>
-                            </a>
-                            <a
-                                href="https://instagram.com"
-                                className="hover:text-white transition-colors"
-                                aria-label="Follow us on Instagram"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaInstagram size={20}/>
-                            </a>
-                            <a
-                                href="https://whatsapp.com"
+                                href="https://wa.me/919459244819"
                                 className="hover:text-white transition-colors"
                                 aria-label="Contact us on WhatsApp"
                                 target="_blank"
@@ -152,6 +152,9 @@ const Footer = () => {
                             © {new Date().getFullYear()} Aahan NGO. All rights reserved.
                         </p>
                         <div className="flex space-x-6 text-sm">
+                            <Link href="/refund" className="hover:text-white transition-colors">
+                                Refund & Cancellation
+                            </Link>
                             <Link href="/privacy" className="hover:text-white transition-colors">
                                 Privacy Policy
                             </Link>

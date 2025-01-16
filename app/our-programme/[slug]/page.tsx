@@ -17,7 +17,7 @@ export default function ProgrammeDetails() {
                 <div className="text-center">
                     <h1 className="text-3xl text-gray-800 mb-4">Programme not found</h1>
                     <Link
-                        href="/our-work"
+                        href="/our-programme"
                         className="text-emerald-600 hover:text-emerald-700 font-medium"
                     >
                         Return to Programmes

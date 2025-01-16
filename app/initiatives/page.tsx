@@ -11,9 +11,9 @@ export default function Initiatives() {
             <section className="bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 py-20">
                 <div className="container mx-auto px-4">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                        initial={{opacity: 0, y: 20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 0.8}}
                     >
                         <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">Our Initiatives</h1>
                         <p className="text-xl text-emerald-50 max-w-2xl">
@@ -94,57 +94,6 @@ export default function Initiatives() {
                 </div>
             </section>
 
-            {/* Detailed Programs */}
-            <section className="py-16 bg-white">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-serif text-emerald-900 mb-12 text-center">
-                        Our Programs
-                    </h2>
-                    <div className="space-y-8">
-                        <div className="bg-emerald-50 p-6 rounded-lg">
-                            <h3 className="text-xl font-serif text-emerald-900 mb-3">
-                                Digital Literacy Program
-                            </h3>
-                            <p className="text-emerald-700 mb-4">
-                                Equipping students with essential digital skills for the modern world.
-                            </p>
-                            <ul className="list-disc list-inside text-emerald-600 space-y-2">
-                                <li>Basic computer skills training</li>
-                                <li>Internet safety workshops</li>
-                                <li>Coding fundamentals</li>
-                            </ul>
-                        </div>
-
-                        <div className="bg-emerald-50 p-6 rounded-lg">
-                            <h3 className="text-xl font-serif text-emerald-900 mb-3">
-                                Community Health Program
-                            </h3>
-                            <p className="text-emerald-700 mb-4">
-                                Promoting health awareness and providing basic healthcare services.
-                            </p>
-                            <ul className="list-disc list-inside text-emerald-600 space-y-2">
-                                <li>Regular health camps</li>
-                                <li>Nutrition awareness</li>
-                                <li>Mental health support</li>
-                            </ul>
-                        </div>
-
-                        <div className="bg-emerald-50 p-6 rounded-lg">
-                            <h3 className="text-xl font-serif text-emerald-900 mb-3">
-                                Skill Development
-                            </h3>
-                            <p className="text-emerald-700 mb-4">
-                                Building capabilities for sustainable livelihoods.
-                            </p>
-                            <ul className="list-disc list-inside text-emerald-600 space-y-2">
-                                <li>Vocational training</li>
-                                <li>Entrepreneurship workshops</li>
-                                <li>Financial literacy</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Get Involved Section */}
             <section className="py-16 bg-gradient-to-br from-emerald-700 to-emerald-600">

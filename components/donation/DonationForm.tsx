@@ -40,7 +40,6 @@ export function DonationForm() {
     };
 
     const handleCustomAmountChange = (value: string) => {
-        // Remove non-numeric characters and limit to numbers
         const numericValue = value.replace(/[^0-9]/g, '');
 
         setFormData(prev => ({
@@ -72,22 +71,39 @@ export function DonationForm() {
         setIsLoading(true);
 
         try {
+            // Create order
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: formData.amount }),
+                body: JSON.stringify({
+                    amount: formData.amount,
+                    receipt: formData.receiptId
+                }),
             });
 
-            if (!orderResponse.ok) {
-                throw new Error('Failed to create order');
+            const orderData = await orderResponse.json();
+            console.log('Order Response:', orderData); // Debug log
+
+            // Check for error in response
+            if (!orderResponse.ok || orderData.error) {
+                const errorMessage = orderData.error?.details || orderData.error || 'Failed to create order';
+                throw new Error(errorMessage);
             }
 
-            const orderData = (await orderResponse.json()) as OrderResponse;
+            // Verify order data
+            if (!orderData.id) {
+                throw new Error('Invalid order data received');
+            }
 
-            const options = {
+            // Initialize Razorpay
+            if (typeof window.Razorpay === 'undefined') {
+                throw new Error('Razorpay SDK not loaded');
+            }
+
+            const options: RazorpayOptions = {
                 ...RAZORPAY_CONFIG,
                 key: RAZORPAY_KEY_ID,
-                amount: formData.amount * 100,
+                amount: orderData.amount,
                 order_id: orderData.id,
                 handler: async (response: RazorpayResponse) => {
                     try {
@@ -96,12 +112,17 @@ export function DonationForm() {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 ...response,
-                                donationData: formData,
+                                donationData: {
+                                    ...formData,
+                                    orderId: orderData.id,
+                                    amount: orderData.amount / 100
+                                }
                             }),
                         });
 
                         if (!verifyResponse.ok) {
-                            throw new Error('Payment verification failed');
+                            const errorData = await verifyResponse.json();
+                            throw new Error(errorData.details || 'Payment verification failed');
                         }
 
                         setPaymentSuccess(true);
@@ -119,20 +140,25 @@ export function DonationForm() {
                         });
                     } catch (error) {
                         console.error('Verification error:', error);
-                        alert('Payment verification failed');
+                        alert(error instanceof Error ? error.message : 'Payment verification failed');
                     }
                 },
                 prefill: {
                     name: formData.name,
                     email: formData.email,
                 },
+                modal: {
+                    ondismiss: () => {
+                        setIsLoading(false);
+                    }
+                }
             };
 
             const razorpay = new window.Razorpay(options);
             razorpay.open();
         } catch (error) {
             console.error('Payment error:', error);
-            alert('Payment failed. Please try again.');
+            alert(error instanceof Error ? error.message : 'Payment failed. Please try again.');
         } finally {
             setIsLoading(false);
         }

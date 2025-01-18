@@ -25,79 +25,76 @@ export default function Header() {
         <header className={`fixed w-full z-50 transition-all duration-300 ${
             isScrolled || !isHome ? 'bg-emerald-50 shadow-md' : 'bg-transparent'
         }`}>
-            <div className="container mx-auto px-4">
-                <nav className="flex items-center justify-between h-20">
-                    {/* Logo and Brand Name */}
+            {/* Explicit max-width container to prevent unexpected scaling */}
+            <div className="container mx-auto px-4 lg:px-8 max-w-[1920px]">
+                {/* Explicit height to prevent collapse */}
+                <nav className="flex items-center justify-between h-24 lg:h-28 min-h-[6rem]">
+                    {/* Logo container with explicit dimensions */}
                     <Link
                         href="/"
-                        className="flex items-center space-x-3"
+                        className="flex items-center space-x-3 flex-shrink-0 min-w-[200px] lg:min-w-[250px]"
                     >
-                        <OptimizedImage
-                            src="/globe.svg"
-                            alt="Aahan NGO Logo"
-                            width={48}
-                            height={48}
-                            className="h-12 w-auto"
-                            priority
-                        />
-                        <div className="flex flex-col">
-                            <span className={`font-serif text-xl font-bold ${
-                                isScrolled || !isHome ? 'text-gray-900' : 'text-white'
-                            }`}>
-                                Aahan
-                            </span>
-                            <span className={`text-xs ${
-                                isScrolled || !isHome ? 'text-gray-600' : 'text-white/80'
-                            }`}>
-                                Aspring Aid For Humanity and Nature
-                            </span>
+                        {/* Logo wrapper to maintain aspect ratio */}
+                        <div className="relative w-[200px] lg:w-[250px] aspect-[4/1]">
+                            <OptimizedImage
+                                src={isScrolled || !isHome ?
+                                    "/Aahan/AAHAN Logo - Original.svg" :
+                                    "/Aahan/AAHAN Logo - White with Transparent Background.svg"
+                                }
+                                alt="Aahan NGO Logo"
+                                fill
+                                className="object-contain !relative h-auto w-80"
+                                height={100}
+                                width={500}
+                                priority
+                            />
                         </div>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-8">
+                    {/* Desktop Navigation with explicit spacing */}
+                    <div className="hidden lg:flex items-center gap-8 xl:gap-12 flex-shrink-0">
                         <NavLinks isScrolled={isScrolled} isHome={isHome} />
-                        <Link href="/support-us">
-                            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
+                        <Link href="/support-us" className="flex-shrink-0">
+                            <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md transition-colors text-lg font-medium whitespace-nowrap">
                                 Support Us
                             </button>
                         </Link>
-
                     </div>
 
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden p-2"
+                        className="lg:hidden p-3 hover:bg-black/5 rounded-lg transition-colors"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label="Toggle menu"
                     >
-                        <div className="w-6 h-5 flex flex-col justify-between">
-                            <span className={`block w-6 h-0.5 transition-all ${
-                                isMenuOpen ? 'rotate-45 translate-y-2' : ''
+                        <div className="w-7 h-6 flex flex-col justify-between">
+                            <span className={`block w-7 h-0.5 transition-all duration-300 ${
+                                isMenuOpen ? 'rotate-45 translate-y-2.5' : ''
                             } ${isScrolled || !isHome ? 'bg-gray-900' : 'bg-white'}`}></span>
-                            <span className={`block w-6 h-0.5 ${
+                            <span className={`block w-7 h-0.5 transition-all duration-300 ${
                                 isMenuOpen ? 'opacity-0' : ''
                             } ${isScrolled || !isHome ? 'bg-gray-900' : 'bg-white'}`}></span>
-                            <span className={`block w-6 h-0.5 transition-all ${
-                                isMenuOpen ? '-rotate-45 -translate-y-2' : ''
+                            <span className={`block w-7 h-0.5 transition-all duration-300 ${
+                                isMenuOpen ? '-rotate-45 -translate-y-2.5' : ''
                             } ${isScrolled || !isHome ? 'bg-gray-900' : 'bg-white'}`}></span>
                         </div>
                     </button>
                 </nav>
 
                 {/* Mobile Menu */}
-                <div className={`md:hidden transition-all duration-300 ${
-                    isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                } overflow-hidden`}>
-                    <div className="bg-white rounded-lg shadow-lg mb-4">
+                <div
+                    className={`lg:hidden transition-all duration-300 ${
+                        isMenuOpen ? 'max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
+                    } overflow-hidden`}
+                >
+                    <div className="bg-white rounded-xl shadow-xl mb-4">
                         <MobileNavLinks />
                         <div className="p-4">
-                            <Link href="/support-us">
-                                <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition-colors">
+                            <Link href="/support-us" className="block">
+                                <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md transition-colors text-lg font-medium">
                                     Support Us
                                 </button>
                             </Link>
-
                         </div>
                     </div>
                 </div>
@@ -112,7 +109,7 @@ interface NavLinksProps {
 }
 
 const NavLinks = ({ isScrolled, isHome }: NavLinksProps) => {
-    const linkClass = `font-medium hover:text-green-600 transition-colors ${
+    const linkClass = `font-medium text-lg hover:text-green-600 transition-colors whitespace-nowrap ${
         isScrolled || !isHome ? 'text-gray-700' : 'text-white'
     }`;
 
@@ -150,7 +147,7 @@ const MobileNavLinks = () => {
                 <Link
                     key={url}
                     href={url}
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-colors"
+                    className="block px-6 py-3 text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-colors text-lg"
                 >
                     {title}
                 </Link>

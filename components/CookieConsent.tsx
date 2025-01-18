@@ -2,24 +2,43 @@
 
 import React, { useEffect, useState } from 'react'
 
-interface CookieConsentProps {
-    className?: string;
+// Utility function to set cookies
+const setCookie = (name: string, value: string, days: number) => {
+    const date = new Date()
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000) // Days to milliseconds
+    document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`
 }
 
-export const CookieConsent: React.FC<CookieConsentProps> = ({ className }) => {
+// Utility function to get a cookie value
+const getCookie = (name: string) => {
+    const cookieArr = document.cookie.split(";")
+    for (let cookie of cookieArr) {
+        cookie = cookie.trim()
+        if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1)
+        }
+    }
+    return null
+}
+
+interface CookieConsentProps {
+    className?: string
+}
+
+export const CookieConsent: React.FC<CookieConsentProps> = () => {
     const [showConsent, setShowConsent] = useState(false)
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
         setMounted(true)
-        const consent = localStorage.getItem('cookie-consent')
+        const consent = getCookie("cookie-consent")
         if (!consent) {
             setShowConsent(true)
         }
     }, [])
 
     const acceptCookies = () => {
-        localStorage.setItem('cookie-consent', 'true')
+        setCookie("cookie-consent", "true", 365) // Consent valid for 1 year
         setShowConsent(false)
     }
 

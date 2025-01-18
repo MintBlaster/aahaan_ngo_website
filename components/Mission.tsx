@@ -75,45 +75,6 @@ const Mission = ({ content }: { content: MissionContent }) => {
                         </motion.div>
                     ))}
                 </div>
-
-                {/* Founder Section */}
-                <motion.div
-                    className="bg-white rounded-lg shadow-xl overflow-hidden max-w-5xl mx-auto"
-                    initial={{opacity: 0, y: 20}}
-                    whileInView={{opacity: 1, y: 0}}
-                    viewport={{once: true}}
-                    transition={{duration: 0.8}}
-                >
-                    <div className="md:flex items-center">
-                        <div className="md:w-2/5 relative">
-                            <div className="aspect-[3/4] relative">
-                                <Image
-                                    src={content.founderNote.image}
-                                    alt="Founder"
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 40vw"
-                                    className="object-cover object-center"
-                                    priority
-                                    quality={100}
-                                />
-                            </div>
-                        </div>
-                        <div className="md:w-3/5 p-8 md:p-12">
-                            <h3 className="text-2xl font-serif text-gray-900 mb-6">
-                                {content.founderNote.title}
-                            </h3>
-                            <p className="text-gray-600 leading-relaxed text-lg">
-                                {content.founderNote.text}
-                            </p>
-                            <div className="mt-6">
-                                <div className="text-green-600 font-semibold">
-                                    Founder & CEO
-                                </div>
-                                {/* Add signature or name if needed */}
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
             </div>
         </section>
     );

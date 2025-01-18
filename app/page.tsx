@@ -11,8 +11,6 @@ export default function Home() {
         <main className="bg-emerald-50">
             <Hero content={content.hero} />
             <Mission content={content.mission} />
-            <FocusAreas content={content.focus} />
-            <Impact content={content.impact} />
             <GetInvolved content={content.getInvolved} />
         </main>
     );

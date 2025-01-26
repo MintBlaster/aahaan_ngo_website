@@ -9,7 +9,7 @@ export const content = {
         title: "Transforming Rural Lives",
         subtitle: "Building sustainable communities through education, healthcare, and rural development",
         cta: "Join Our Mission",
-        backgroundImage: "/featured/image3.jpg"
+        backgroundImage: "/images/Featured.jpg"
     },
     mission: {
         title: "Our Mission & Values",

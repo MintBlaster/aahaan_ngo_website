@@ -41,8 +41,12 @@ export const programmes: Programme[] = [
         shortDescription: "An initiative to eliminate tuberculosis and empower communities.",
         description: "Tuberculosis is one of the very old diseases known. It is a major health problem in the developing world. The problem is worsening due to HIV/AIDS and an increase in MDR TB cases throughout the world.\n\nI want tell you that every year 14000 new TUBERCULOSIS (TB) patients are coming to Himachal Pradesh. TB Mukt Gram Panchayat is an initiative to make every panchayat or small geography TB free. The initiative was launched by the Prime Minister on World TB Day in March 2023. The goal of the initiative is to: \n\n- Empower panchayats to understand the extent of the TB problem\n- Take action to solve the problem\n- Create healthy competition among panchayats\n- Recognize the contribution of panchayats",
         images: [
-            "/images/tb-free-1.jpg",
-            "/images/tb-free-2.jpg"
+            "/images/programmes/tb-free/TB-1.jpg",
+            "/images/programmes/tb-free/TB-2.jpg",
+            "/images/programmes/tb-free/TB-3.jpg",
+            "/images/programmes/tb-free/TB-4.jpg",
+            "/images/programmes/tb-free/TB-5.jpg",
+            "/images/programmes/tb-free/TB-6.jpg",
         ],
         category: "Health",
         slug: "tb-free-programme"

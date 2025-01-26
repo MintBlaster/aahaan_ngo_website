@@ -10,7 +10,6 @@ import { DONATION_AMOUNTS, RAZORPAY_CONFIG, RAZORPAY_KEY_ID } from '@/lib/utils/
 import type {
     DonationFormData,
     RazorpayResponse,
-    OrderResponse,
     RazorpayOptions
 } from '@/lib/types/donation';
 

@@ -32,22 +32,25 @@ export default function Header() {
                     {/* Logo container with explicit dimensions */}
                     <Link
                         href="/"
-                        className="flex items-center space-x-3 flex-shrink-0 min-w-[200px] lg:min-w-[250px]"
+                        className="flex items-center space-x-3 flex-shrink-0"
                     >
-                        {/* Logo wrapper to maintain aspect ratio */}
-                        <div className="relative w-[200px] lg:w-[250px] aspect-[4/1]">
-                            <OptimizedImage
-                                src={isScrolled || !isHome ?
-                                    "/Aahan/AAHAN Logo - Original.svg" :
-                                    "/Aahan/AAHAN Logo - White with Transparent Background.svg"
-                                }
-                                alt="Aahan NGO Logo"
-                                fill
-                                className="object-contain !relative h-auto w-80"
-                                height={100}
-                                width={500}
-                                priority
-                            />
+                        <div className="flex flex-col">
+                            <h1 className={`
+           text-xl lg:text-2xl font-bold self-start
+           ${isScrolled || !isHome ? 'text-emerald-800' : 'text-white'}
+           tracking-wide
+       `}>
+           <span className={`
+               ${isScrolled || !isHome ? 'text-emerald-600' : 'text-emerald-200'}
+           `}>A</span>AHAN
+                            </h1>
+                            <p className={`
+           text-[10px] lg:text-xs font-light tracking-widest uppercase
+           ${isScrolled || !isHome ? 'text-emerald-600' : 'text-emerald-100'}
+           opacity-80 -mt-1
+       `}>
+                                Aspiring Aid for Humanity and Nature
+                            </p>
                         </div>
                     </Link>
 

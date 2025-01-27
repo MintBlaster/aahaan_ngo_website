@@ -146,23 +146,23 @@ export function DonationForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto">
-            <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8 transform transition-all duration-500 hover:shadow-2xl">
+        <div className="w-full max-w-md mx-auto px-4 sm:px-0">
+            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 space-y-6 sm:space-y-8 transform transition-all duration-500 hover:shadow-2xl">
                 <div className="text-center space-y-2">
-                    <Heart className="w-12 h-12 text-rose-500 mx-auto animate-pulse" />
-                    <h2 className="text-2xl font-bold text-gray-800">Make a Difference Today</h2>
-                    <p className="text-gray-600">Your generosity powers our mission</p>
+                    <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-rose-500 mx-auto animate-pulse" />
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Make a Difference Today</h2>
+                    <p className="text-sm sm:text-base text-gray-600">Your generosity powers our mission</p>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-5 sm:space-y-6">
                     <div>
-                        <Label className="text-gray-700 font-medium">Choose Your Impact</Label>
-                        <div className="grid grid-cols-3 gap-3 mt-2">
+                        <Label className="text-sm sm:text-base text-gray-700 font-medium">Choose Your Impact</Label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mt-2">
                             {DONATION_TIERS.map((tier, index) => (
                                 <button
                                     key={tier.value}
                                     onClick={() => handleAmountSelection(tier.value, index)}
-                                    className={`relative p-4 rounded-xl text-center transition-all duration-300 transform hover:scale-105 ${
+                                    className={`relative py-3 px-2 sm:p-4 rounded-xl text-center transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
                                         !formData.isCustomAmount && selectedTier === index
                                             ? 'bg-emerald-500 text-white shadow-lg scale-105'
                                             : 'bg-gray-50 text-gray-700 hover:bg-emerald-50'
@@ -178,42 +178,43 @@ export function DonationForm() {
                     </div>
 
                     <div className="relative">
-                        <Label className="text-gray-700 font-medium">Or Enter Custom Amount</Label>
+                        <Label className="text-sm sm:text-base text-gray-700 font-medium">Or Enter Custom Amount</Label>
                         <div className="mt-2 relative">
                             <Input
                                 value={formData.customAmount}
                                 onChange={(e) => handleCustomAmountChange(e.target.value)}
-                                className={`pl-8 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 ${
+                                className={`pl-7 sm:pl-8 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 ${
                                     formData.isCustomAmount ? 'bg-emerald-50' : ''
                                 }`}
-                                placeholder="Enter any amount above ₹10"
+                                placeholder="Min amount ₹10"
                                 type="number"
                                 min="10"
+                                inputMode="numeric"
                             />
-                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+                            <span className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">₹</span>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">
-                            Every contribution, no matter the size, makes an impact
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                            Every contribution makes an impact
                         </p>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                         <div className="group">
-                            <Label className="text-gray-700 font-medium">Your Name</Label>
+                            <Label className="text-sm sm:text-base text-gray-700 font-medium">Your Name</Label>
                             <Input
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                className="mt-1 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                className="mt-1 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                                 placeholder="Enter your full name"
                             />
                         </div>
 
                         <div className="group">
-                            <Label className="text-gray-700 font-medium">Email Address</Label>
+                            <Label className="text-sm sm:text-base text-gray-700 font-medium">Email Address</Label>
                             <Input
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="mt-1 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                className="mt-1 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                                 placeholder="Enter your email"
                                 type="email"
                             />
@@ -223,13 +224,13 @@ export function DonationForm() {
                     <Button
                         onClick={handlePayment}
                         disabled={isLoading}
-                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 h-12 rounded-xl"
+                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 h-10 sm:h-12 rounded-xl text-sm sm:text-base"
                     >
                         {isLoading ? (
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                            <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white" />
                         ) : (
                             <>
-                                <Send className="w-5 h-5" />
+                                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                                 <span>{`Donate ₹${formData.amount}`}</span>
                             </>
                         )}

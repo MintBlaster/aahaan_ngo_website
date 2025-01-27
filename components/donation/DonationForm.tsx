@@ -24,7 +24,7 @@ interface ErrorProps {
 
 export function DonationForm() {
     const [formData, setFormData] = useState<DonationFormData>({
-        customAmount: "INR",
+        customAmount: "",
         isCustomAmount: false,
         name: '',
         email: '',
@@ -97,7 +97,7 @@ export function DonationForm() {
             }
 
             const options: RazorpayOptions = {
-                currency: "IN",
+                currency: "INR",
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: orderData.amount,
                 order_id: orderData.id,

@@ -1,7 +1,7 @@
 // In your API route
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { EmailTemplate } from '@/components/EmailTemplate';
+import EmailTemplate from "@/components/donation/EmailTemplate";
 
 export async function POST(request: Request) {
     try {

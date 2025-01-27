@@ -5,47 +5,61 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Heart, Sparkles, Send } from 'lucide-react';
+import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
+import type { DonationFormData, RazorpayResponse, RazorpayOptions, PaymentStatus } from '@/lib/types/donation';
 import { ReceiptModal } from "@/components/donation/RecieptModal";
-import type { DonationFormData, RazorpayResponse, RazorpayOptions } from '@/lib/types/donation';
 
-const DONATION_TIERS = [
-    { value: 10, label: '₹10' },
-    { value: 50, label: '₹50' },
-    { value: 100, label: '₹100' },
-    { value: 500, label: '₹500' },
-    { value: 1000, label: '₹1000' },
-    { value: 5000, label: '₹5000' },
-];
 
-interface ErrorProps {
-    message: string;
-    details?: string;
+interface DonationTier {
+    value: number;
+    label: string;
+    impact: string;
 }
+
+const DONATION_TIERS: DonationTier[] = [
+    { value: 10, label: '₹10', impact: 'Provides a meal' },
+    { value: 50, label: '₹50', impact: 'Supplies basic medicines' },
+    { value: 100, label: '₹100', impact: 'Supports education materials' },
+    { value: 500, label: '₹500', impact: 'Funds skill training' },
+    { value: 1000, label: '₹1000', impact: 'Enables healthcare access' },
+    { value: 5000, label: '₹5000', impact: 'Sponsors complete education' },
+];
 
 export function DonationForm() {
     const [formData, setFormData] = useState<DonationFormData>({
-        customAmount: "",
+        customAmount: '',
         isCustomAmount: false,
         name: '',
         email: '',
-        orderId: "",
-        paymentId: "",
+        orderId: '',
+        paymentId: '',
         receiptId: `RCPT-${Date.now()}`,
-        amount: 100
+        amount: 100,
+        date: new Date().toISOString(),
+        paymentMethod: 'Razorpay'
     });
 
     const [isLoading, setIsLoading] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
     const [selectedTier, setSelectedTier] = useState(2);
+    const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('pending');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleAmountSelection = (amount: number, index: number) => {
         setSelectedTier(index);
         setFormData(prev => ({
             ...prev,
-            amount: amount,
+            amount,
             isCustomAmount: false,
-            customAmount: ""
+            customAmount: '',
         }));
+
+        toast.success(DONATION_TIERS[index].impact, {
+            icon: '💝',
+            position: 'bottom-center',
+            duration: 2000,
+        });
     };
 
     const handleCustomAmountChange = (value: string) => {
@@ -54,28 +68,54 @@ export function DonationForm() {
             ...prev,
             customAmount: numericValue,
             isCustomAmount: true,
-            amount: numericValue ? parseInt(numericValue) : 0
+            amount: numericValue ? parseInt(numericValue) : 0,
         }));
         setSelectedTier(-1);
     };
 
     const validateForm = (): boolean => {
         if (!formData.name.trim()) {
-            throw new Error('Please enter your name');
+            toast.error('Please enter your name');
+            return false;
         }
         if (!formData.email.trim() || !formData.email.includes('@')) {
-            throw new Error('Please enter a valid email');
+            toast.error('Please enter a valid email');
+            return false;
         }
         if (formData.amount < 10) {
-            throw new Error('Minimum donation amount is ₹10');
+            toast.error('Minimum donation amount is ₹10');
+            return false;
         }
         return true;
     };
 
-    const handlePayment = async (): Promise<void> => {
+    const sendReceiptEmail = async (orderData: any) => {
+        try {
+            const emailResponse = await fetch('/api/send-receipt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    amount: formData.amount,
+                    orderId: orderData.id,
+                    donationType: 'One-time Donation'
+                }),
+            });
+
+            if (!emailResponse.ok) {
+                console.error('Failed to send receipt email');
+            }
+        } catch (error) {
+            console.error('Email sending error:', error);
+        }
+    };
+
+    const handlePayment = async () => {
         try {
             if (!validateForm()) return;
             setIsLoading(true);
+            setPaymentStatus('pending');
 
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
@@ -92,17 +132,13 @@ export function DonationForm() {
                 throw new Error(orderData.error?.details || 'Failed to create order');
             }
 
-            if (!orderData.id) {
-                throw { message: 'Invalid order data received' } as ErrorProps;
-            }
-
             const options: RazorpayOptions = {
-                currency: "INR",
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: orderData.amount,
+                currency: "INR",
+                name: "Aahan NGO",
+                description: "Donation Payment",
                 order_id: orderData.id,
-                name: "Your Organization",
-                description: "Donation",
                 handler: async (response: RazorpayResponse) => {
                     try {
                         const verifyResponse = await fetch('/api/verify-payment', {
@@ -113,18 +149,25 @@ export function DonationForm() {
                                 donationData: {
                                     ...formData,
                                     orderId: orderData.id,
+                                    paymentId: response.razorpay_payment_id,
                                     amount: orderData.amount / 100
                                 }
                             }),
                         });
 
                         if (!verifyResponse.ok) {
-                            throw { message: 'Payment verification failed' } as ErrorProps;
+                            throw new Error('Payment verification failed');
                         }
 
+                        await sendReceiptEmail(orderData);
+
+                        setPaymentStatus('success');
                         setShowReceipt(true);
+                        toast.success('Thank you for your generous donation! 🎉');
                     } catch (error) {
-                        throw { message: 'Payment verification failed' } as ErrorProps;
+                        setPaymentStatus('failed');
+                        setErrorMessage('Payment verification failed');
+                        toast.error('Payment verification failed');
                     }
                 },
                 prefill: {
@@ -133,90 +176,111 @@ export function DonationForm() {
                 },
                 theme: {
                     color: "#10B981"
+                },
+                modal: {
+                    ondismiss: function() {
+                        setPaymentStatus('failed');
+                        setErrorMessage('Payment was cancelled');
+                        toast.error('Payment was cancelled');
+                    }
                 }
             };
 
             const razorpay = new window.Razorpay(options);
             razorpay.open();
         } catch (error) {
-            alert(error instanceof Error ? error.message : 'Payment failed. Please try again.');
+            setPaymentStatus('failed');
+            const errorMsg = error instanceof Error ? error.message : 'Payment failed. Please try again.';
+            setErrorMessage(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div className="w-full max-w-[95%] sm:max-w-md mx-auto px-2 sm:px-0">
-            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 space-y-6 sm:space-y-8 transform transition-all duration-500 hover:shadow-2xl">
-                <div className="text-center space-y-2">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-[95%] sm:max-w-md mx-auto px-2 sm:px-0"
+        >
+            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 space-y-6 sm:space-y-8">
+                <motion.div
+                    className="text-center space-y-2"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
                     <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-rose-500 mx-auto animate-pulse" />
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Make a Difference Today</h2>
                     <p className="text-sm sm:text-base text-gray-600">Your generosity powers our mission</p>
-                </div>
+                </motion.div>
 
-                <div className="space-y-5 sm:space-y-6">
+                <div className="space-y-5">
                     <div>
-                        <Label className="text-sm sm:text-base text-gray-700 font-medium">Choose Your Impact</Label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mt-2">
+                        <Label className="text-sm sm:text-base text-gray-700 font-medium">
+                            Choose Your Impact
+                        </Label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                             {DONATION_TIERS.map((tier, index) => (
-                                <button
+                                <motion.button
                                     key={tier.value}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                     onClick={() => handleAmountSelection(tier.value, index)}
-                                    className={`relative py-3 px-2 sm:p-4 rounded-xl text-center transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
+                                    className={`relative p-3 rounded-xl text-center ${
                                         !formData.isCustomAmount && selectedTier === index
-                                            ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                                            ? 'bg-emerald-500 text-white'
                                             : 'bg-gray-50 text-gray-700 hover:bg-emerald-50'
                                     }`}
                                 >
                                     {selectedTier === index && (
-                                        <Sparkles className="absolute -top-2 -right-2 w-4 h-4 text-yellow-400 animate-spin" />
+                                        <Sparkles className="absolute -top-2 -right-2 w-4 h-4 text-yellow-400" />
                                     )}
                                     {tier.label}
-                                </button>
+                                </motion.button>
                             ))}
                         </div>
                     </div>
 
-                    <div className="relative">
-                        <Label className="text-sm sm:text-base text-gray-700 font-medium">Or Enter Custom Amount</Label>
-                        <div className="mt-2 relative">
+                    <div>
+                        <Label className="text-sm sm:text-base text-gray-700 font-medium">
+                            Or Enter Custom Amount
+                        </Label>
+                        <div className="relative mt-2">
                             <Input
                                 value={formData.customAmount}
                                 onChange={(e) => handleCustomAmountChange(e.target.value)}
-                                className={`pl-7 sm:pl-8 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 ${
-                                    formData.isCustomAmount ? 'bg-emerald-50' : ''
-                                }`}
+                                className="pl-7 text-sm sm:text-base"
                                 placeholder="Min amount ₹10"
                                 type="number"
                                 min="10"
-                                inputMode="numeric"
                             />
-                            <span className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">₹</span>
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                ₹
+                            </span>
                         </div>
-                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                            Every contribution makes an impact
-                        </p>
                     </div>
 
-                    <div className="space-y-3 sm:space-y-4">
-                        <div className="group">
-                            <Label className="text-sm sm:text-base text-gray-700 font-medium">Your Name</Label>
+                    <div className="space-y-4">
+                        <div>
+                            <Label>Your Name</Label>
                             <Input
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                className="mt-1 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                                 placeholder="Enter your full name"
+                                className="mt-1"
                             />
                         </div>
 
-                        <div className="group">
-                            <Label className="text-sm sm:text-base text-gray-700 font-medium">Email Address</Label>
+                        <div>
+                            <Label>Email Address</Label>
                             <Input
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="mt-1 text-sm sm:text-base transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                                 placeholder="Enter your email"
                                 type="email"
+                                className="mt-1"
                             />
                         </div>
                     </div>
@@ -224,13 +288,17 @@ export function DonationForm() {
                     <Button
                         onClick={handlePayment}
                         disabled={isLoading}
-                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 h-10 sm:h-12 rounded-xl text-sm sm:text-base"
+                        className="w-full h-12"
                     >
                         {isLoading ? (
-                            <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white" />
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                                className="h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            />
                         ) : (
                             <>
-                                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <Send className="mr-2 h-5 w-5" />
                                 <span>{`Donate ₹${formData.amount}`}</span>
                             </>
                         )}
@@ -242,7 +310,9 @@ export function DonationForm() {
                 isOpen={showReceipt}
                 onClose={() => setShowReceipt(false)}
                 donationData={formData}
+                status={paymentStatus}
+                errorMessage={errorMessage}
             />
-        </div>
+        </motion.div>
     );
 }

@@ -6,6 +6,7 @@ import React from "react"
 import "@/app/globals.css";
 import { Metadata } from 'next';
 import { CookieConsent } from '@/components/CookieConsent'
+import {Toaster} from "sonner";
 
 // Font configurations
 const poppins = Poppins({
@@ -147,6 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }>
         <Navbar />
         <main className="flex-grow">{children}</main>
+        <Toaster />
         <Footer />
       </React.Suspense>
 

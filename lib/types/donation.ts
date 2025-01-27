@@ -1,14 +1,17 @@
 export interface DonationFormData {
-    receiptId: string;
+    customAmount?: string;
+    isCustomAmount?: boolean;
     name: string;
     email: string;
+    orderId: string;
+    paymentId: string;
+    receiptId: string;
     amount: number;
-    isCustomAmount: boolean;
-    customAmount: string;
-    paymentId?: string;
-    orderId?: string;
+    date: string;
+    address?: string;
+    phone?: string;
+    paymentMethod: string;
 }
-
 export interface RazorpayResponse {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -61,3 +64,6 @@ declare global {
         Razorpay: RazorpayClass;
     }
 }
+
+export type PaymentStatus = 'pending' | 'success' | 'failed';
+

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { DonationForm } from "@/components/donation/DonationForm";
+import {DonationForm} from "@/components/donation/DonationForm";
 
 export default function SupportPage() {
     return (

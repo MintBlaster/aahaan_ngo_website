@@ -1,111 +1,92 @@
-'use client';
-
-import React from 'react';
+// components/donation/RecieptModal.tsx
+import { FC } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { DonationFormData } from "@/lib/types/donation";
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import { Button } from "@/components/ui/Button";
+import { Download, CheckCircle, XCircle } from "lucide-react";
+import { format } from "date-fns";
+import { DownloadReceipt } from './DownloadReceipt';
 
 interface ReceiptModalProps {
     isOpen: boolean;
     onClose: () => void;
-    donationData: DonationFormData;
+    donationData: {
+        name: string;
+        email: string;
+        amount: number;
+        receiptId: string;
+        date: string;
+        paymentId?: string;
+        orderId?: string;
+        paymentMethod: string;
+    };
+    status: 'success' | 'failed' | 'pending';
+    errorMessage?: string;
 }
 
-export function ReceiptModal({ isOpen, onClose, donationData }: ReceiptModalProps) {
-    const downloadPDF = () => {
-        const doc = new jsPDF();
-
-        // Header section
-        doc.setFontSize(20);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Aahan NGO', 105, 20, { align: 'center' });
-
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.text('Village Nagar, Kunihar, Solan, H.P., IN 173207', 105, 27, { align: 'center' });
-        doc.text('Phone: +91 94592 44849 | Email: support@aahanngo.org', 105, 32, { align: 'center' });
-        doc.line(20, 35, 190, 35); // Divider line
-
-        // Title
-        doc.setFontSize(16);
-        doc.text('Donation Receipt', 105, 45, { align: 'center' });
-
-        // Donation details table
-        const startY = 55;
-        (doc as any).autoTable({
-            startY,
-            head: [['Description', 'Details']],
-            body: [
-                ['Receipt ID', donationData.receiptId],
-                ['Name', donationData.name],
-                ['Email', donationData.email],
-                ['Donation Amount', `Rs. ${donationData.amount.toLocaleString()}`],
-                ['Date', new Date().toLocaleDateString()],
-            ],
-            theme: 'grid',
-            headStyles: {
-                fillColor: [14, 159, 105], // Emerald green
-                textColor: 255,
-                halign: 'center',
-            },
-            styles: {
-                fontSize: 12,
-            },
-            columnStyles: {
-                0: { fontStyle: 'bold', halign: 'left' },
-                1: { halign: 'left' },
-            },
-        });
-
-        // Thank you section
-        const finalY = (doc as any).lastAutoTable.finalY + 10;
-        doc.setFontSize(12);
-        doc.text(
-            'Thank you for your generous support! Your contribution helps us create meaningful change.',
-            20,
-            finalY
-        );
-
-        // Footer section
-        const pageHeight = doc.internal.pageSize.height;
-        doc.line(20, pageHeight - 30, 190, pageHeight - 30); // Divider line
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text('For any queries, contact us at support@aahanngo.org or call +91 94592 44849.', 105, pageHeight - 20, {
-            align: 'center',
-        });
-        doc.text('Visit us at www.aahaan.org', 105, pageHeight - 15, { align: 'center' });
-
-        // Save the PDF
-        doc.save(`donation-receipt-${donationData.receiptId}.pdf`);
-    };
-
+export const ReceiptModal: FC<ReceiptModalProps> = ({
+                                                        isOpen,
+                                                        onClose,
+                                                        donationData,
+                                                        status,
+                                                        errorMessage
+                                                    }) => {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px]">
-                <div className="text-center space-y-6 p-6">
-                    <h3 className="text-2xl font-semibold text-emerald-900">
-                        Thank You for Your Donation!
-                    </h3>
-                    <p className="text-gray-600">
-                        Your contribution of ₹{donationData.amount.toLocaleString()} has been received.
-                    </p>
+            <DialogContent className="max-w-md">
+                <div className="space-y-6">
+                    {status === 'success' ? (
+                        <>
+                            <div className="text-center space-y-2">
+                                <CheckCircle className="mx-auto h-12 w-12 text-emerald-500" />
+                                <h2 className="text-2xl font-semibold text-gray-900">
+                                    Thank You!
+                                </h2>
+                                <p className="text-gray-600">
+                                    Your donation of ₹{donationData.amount} has been received successfully.
+                                </p>
+                            </div>
 
-                    <div className="bg-emerald-50 p-4 rounded-lg">
-                        <p className="text-sm text-emerald-800">
-                            Receipt ID: {donationData.receiptId}
-                        </p>
-                    </div>
+                            <div className="space-y-2 text-sm text-gray-600">
+                                <p>Receipt ID: {donationData.receiptId}</p>
+                                <p>Date: {format(new Date(donationData.date), 'PPP')}</p>
+                                {donationData.paymentId && (
+                                    <p>Payment ID: {donationData.paymentId}</p>
+                                )}
+                            </div>
 
-                    <button
-                        className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
-                        onClick={downloadPDF}
-                    >
-                        Download Receipt
-                    </button>
+                            <DownloadReceipt donationData={donationData} />
+
+                            <p className="text-xs text-gray-500 text-center">
+                                A copy of the receipt has been sent to your email address.
+                            </p>
+                        </>
+                    ) : status === 'failed' ? (
+                        <div className="text-center space-y-4">
+                            <XCircle className="mx-auto h-12 w-12 text-red-500" />
+                            <div className="space-y-2">
+                                <h2 className="text-xl font-semibold text-gray-900">
+                                    Payment Failed
+                                </h2>
+                                <p className="text-gray-600">
+                                    {errorMessage || "There was an error processing your donation. Please try again."}
+                                </p>
+                            </div>
+                            <Button
+                                variant="outline"
+                                className="w-full"
+                                onClick={onClose}
+                            >
+                                Close
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="text-center space-y-4">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto" />
+                            <p className="text-gray-600">Processing your donation...</p>
+                        </div>
+                    )}
                 </div>
             </DialogContent>
         </Dialog>
     );
-}
+};

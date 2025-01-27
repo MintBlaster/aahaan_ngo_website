@@ -2,9 +2,13 @@
 import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
 import GetInvolved from "@/components/GetInvolved";
+import MessageSection from "@/components/Messages";
+import MessageGrid from "@/components/MessageGrid";
+
+
 import { messages } from "@/data/messages";
 import { content } from "@/data/content";
-import MessageSection from "@/components/Messages";
+import { gridMessages } from "@/data/gridMessages"
 
 export default function Home() {
 
@@ -20,6 +24,7 @@ export default function Home() {
                     isReverse={index % 2 !== 0}
                 />
             ))}
+            <MessageGrid messages={gridMessages} />
             <GetInvolved content={content.getInvolved}/>
         </main>
     );

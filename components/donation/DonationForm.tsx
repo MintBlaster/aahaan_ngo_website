@@ -4,14 +4,23 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SiRazorpay } from 'react-icons/si';
+import { Heart, Sparkles, Send } from 'lucide-react';
 import { ReceiptModal } from "@/components/donation/RecieptModal";
-import { DONATION_AMOUNTS, RAZORPAY_CONFIG, RAZORPAY_KEY_ID } from '@/lib/utils/donation';
-import type {
-    DonationFormData,
-    RazorpayResponse,
-    RazorpayOptions
-} from '@/lib/types/donation';
+import type { DonationFormData, RazorpayResponse, RazorpayOptions } from '@/lib/types/donation';
+
+const DONATION_TIERS = [
+    { value: 10, label: '₹10' },
+    { value: 50, label: '₹50' },
+    { value: 100, label: '₹100' },
+    { value: 500, label: '₹500' },
+    { value: 1000, label: '₹1000' },
+    { value: 5000, label: '₹5000' },
+];
+
+interface ErrorProps {
+    message: string;
+    details?: string;
+}
 
 export function DonationForm() {
     const [formData, setFormData] = useState<DonationFormData>({
@@ -22,14 +31,15 @@ export function DonationForm() {
         orderId: "",
         paymentId: "",
         receiptId: `RCPT-${Date.now()}`,
-        amount: 1000
+        amount: 100
     });
 
     const [isLoading, setIsLoading] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
-    const [paymentSuccess, setPaymentSuccess] = useState(false);
+    const [selectedTier, setSelectedTier] = useState(2);
 
-    const handleAmountSelection = (amount: number) => {
+    const handleAmountSelection = (amount: number, index: number) => {
+        setSelectedTier(index);
         setFormData(prev => ({
             ...prev,
             amount: amount,
@@ -40,37 +50,33 @@ export function DonationForm() {
 
     const handleCustomAmountChange = (value: string) => {
         const numericValue = value.replace(/[^0-9]/g, '');
-
         setFormData(prev => ({
             ...prev,
             customAmount: numericValue,
             isCustomAmount: true,
             amount: numericValue ? parseInt(numericValue) : 0
         }));
+        setSelectedTier(-1);
     };
 
     const validateForm = (): boolean => {
         if (!formData.name.trim()) {
-            alert('Please enter your name');
-            return false;
+            throw new Error('Please enter your name');
         }
         if (!formData.email.trim() || !formData.email.includes('@')) {
-            alert('Please enter a valid email');
-            return false;
+            throw new Error('Please enter a valid email');
         }
         if (formData.amount < 10) {
-            alert('Minimum donation amount is ₹10');
-            return false;
+            throw new Error('Minimum donation amount is ₹10');
         }
         return true;
     };
 
     const handlePayment = async (): Promise<void> => {
-        if (!validateForm()) return;
-        setIsLoading(true);
-
         try {
-            // Create order
+            if (!validateForm()) return;
+            setIsLoading(true);
+
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -81,29 +87,22 @@ export function DonationForm() {
             });
 
             const orderData = await orderResponse.json();
-            console.log('Order Response:', orderData); // Debug log
 
-            // Check for error in response
             if (!orderResponse.ok || orderData.error) {
-                const errorMessage = orderData.error?.details || orderData.error || 'Failed to create order';
-                throw new Error(errorMessage);
+                throw new Error(orderData.error?.details || 'Failed to create order');
             }
 
-            // Verify order data
             if (!orderData.id) {
-                throw new Error('Invalid order data received');
-            }
-
-            // Initialize Razorpay
-            if (typeof window.Razorpay === 'undefined') {
-                throw new Error('Razorpay SDK not loaded');
+                throw { message: 'Invalid order data received' } as ErrorProps;
             }
 
             const options: RazorpayOptions = {
-                ...RAZORPAY_CONFIG,
-                key: RAZORPAY_KEY_ID,
+                currency: "",
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: orderData.amount,
                 order_id: orderData.id,
+                name: "Your Organization",
+                description: "Donation",
                 handler: async (response: RazorpayResponse) => {
                     try {
                         const verifyResponse = await fetch('/api/verify-payment', {
@@ -120,43 +119,26 @@ export function DonationForm() {
                         });
 
                         if (!verifyResponse.ok) {
-                            const errorData = await verifyResponse.json();
-                            throw new Error(errorData.details || 'Payment verification failed');
+                            throw { message: 'Payment verification failed' } as ErrorProps;
                         }
 
-                        setPaymentSuccess(true);
                         setShowReceipt(true);
-
-                        // Send receipt email
-                        await fetch('/api/send-receipt', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...formData,
-                                paymentId: response.razorpay_payment_id,
-                                orderId: response.razorpay_order_id,
-                            }),
-                        });
                     } catch (error) {
-                        console.error('Verification error:', error);
-                        alert(error instanceof Error ? error.message : 'Payment verification failed');
+                        throw { message: 'Payment verification failed' } as ErrorProps;
                     }
                 },
                 prefill: {
                     name: formData.name,
                     email: formData.email,
                 },
-                modal: {
-                    ondismiss: () => {
-                        setIsLoading(false);
-                    }
+                theme: {
+                    color: "#10B981"
                 }
             };
 
             const razorpay = new window.Razorpay(options);
             razorpay.open();
         } catch (error) {
-            console.error('Payment error:', error);
             alert(error instanceof Error ? error.message : 'Payment failed. Please try again.');
         } finally {
             setIsLoading(false);
@@ -164,88 +146,95 @@ export function DonationForm() {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-lg p-8">
-            <div className="space-y-6">
-                <div>
-                    <Label className="text-emerald-900">Select Amount</Label>
-                    <div className="grid grid-cols-3 gap-3 mt-2">
-                        {DONATION_AMOUNTS.map((amount) => (
-                            <button
-                                key={amount.value}
-                                type="button"
-                                onClick={() => handleAmountSelection(amount.value)}
-                                className={`p-4 rounded-lg text-center transition-all ${
-                                    !formData.isCustomAmount && formData.amount === amount.value
-                                        ? 'bg-emerald-600 text-white'
-                                        : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                                }`}
-                            >
-                                {amount.label}
-                            </button>
-                        ))}
-                        <button
-                            type="button"
-                            onClick={() => setFormData(prev => ({ ...prev, isCustomAmount: true }))}
-                            className={`p-4 rounded-lg text-center transition-all ${
-                                formData.isCustomAmount
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                            }`}
-                        >
-                            Custom
-                        </button>
-                    </div>
+        <div className="max-w-md mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8 transform transition-all duration-500 hover:shadow-2xl">
+                <div className="text-center space-y-2">
+                    <Heart className="w-12 h-12 text-rose-500 mx-auto animate-pulse" />
+                    <h2 className="text-2xl font-bold text-gray-800">Make a Difference Today</h2>
+                    <p className="text-gray-600">Your generosity powers our mission</p>
                 </div>
 
-                {formData.isCustomAmount && (
+                <div className="space-y-6">
                     <div>
-                        <Label className="text-emerald-900">Enter Custom Amount</Label>
-                        <div className="flex items-center">
-                            <span className="mr-2 text-emerald-600">₹</span>
+                        <Label className="text-gray-700 font-medium">Choose Your Impact</Label>
+                        <div className="grid grid-cols-3 gap-3 mt-2">
+                            {DONATION_TIERS.map((tier, index) => (
+                                <button
+                                    key={tier.value}
+                                    onClick={() => handleAmountSelection(tier.value, index)}
+                                    className={`relative p-4 rounded-xl text-center transition-all duration-300 transform hover:scale-105 ${
+                                        !formData.isCustomAmount && selectedTier === index
+                                            ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                                            : 'bg-gray-50 text-gray-700 hover:bg-emerald-50'
+                                    }`}
+                                >
+                                    {selectedTier === index && (
+                                        <Sparkles className="absolute -top-2 -right-2 w-4 h-4 text-yellow-400 animate-spin" />
+                                    )}
+                                    {tier.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        <Label className="text-gray-700 font-medium">Or Enter Custom Amount</Label>
+                        <div className="mt-2 relative">
                             <Input
-                                type="text"
                                 value={formData.customAmount}
                                 onChange={(e) => handleCustomAmountChange(e.target.value)}
-                                className="mt-1 flex-grow"
-                                placeholder="Enter your desired amount"
+                                className={`pl-8 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 ${
+                                    formData.isCustomAmount ? 'bg-emerald-50' : ''
+                                }`}
+                                placeholder="Enter any amount above ₹10"
+                                type="number"
+                                min="10"
                             />
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">
-                            Minimum donation amount is ₹10
+                            Every contribution, no matter the size, makes an impact
                         </p>
                     </div>
-                )}
 
-                <div className="space-y-4">
-                    <div>
-                        <Label className="text-emerald-900">Your Name</Label>
-                        <Input
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="mt-1"
-                            placeholder="Enter your full name"
-                        />
+                    <div className="space-y-4">
+                        <div className="group">
+                            <Label className="text-gray-700 font-medium">Your Name</Label>
+                            <Input
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                className="mt-1 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                placeholder="Enter your full name"
+                            />
+                        </div>
+
+                        <div className="group">
+                            <Label className="text-gray-700 font-medium">Email Address</Label>
+                            <Input
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                className="mt-1 transition-all duration-300 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
+                                placeholder="Enter your email"
+                                type="email"
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <Label className="text-emerald-900">Email Address</Label>
-                        <Input
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="mt-1"
-                            placeholder="Enter your email"
-                            type="email"
-                        />
-                    </div>
+
+                    <Button
+                        onClick={handlePayment}
+                        disabled={isLoading}
+                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 h-12 rounded-xl"
+                    >
+                        {isLoading ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                        ) : (
+                            <>
+                                <Send className="w-5 h-5" />
+                                <span>{`Donate ₹${formData.amount}`}</span>
+                            </>
+                        )}
+                    </Button>
                 </div>
-
-                <Button
-                    onClick={handlePayment}
-                    disabled={isLoading}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                >
-                    <SiRazorpay className="mr-2" />
-                    {isLoading ? 'Processing...' : `Donate ₹${formData.amount}`}
-                </Button>
             </div>
 
             <ReceiptModal

@@ -39,7 +39,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, isReverse = fa
                     gap-6 md:gap-12 items-center md:items-start`}>
 
                     {/* Image Container with sticky positioning */}
-                    <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 flex-shrink-0
+                    <div className="w-52 h-52 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 flex-shrink-0
                         md:sticky md:top-32">
                         <motion.div
                             className="w-full h-full rounded-full overflow-hidden border-4 border-emerald-600 shadow-lg"
@@ -58,17 +58,17 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, isReverse = fa
 
                     {/* Content Container */}
                     <div className="flex-1 text-center md:text-left">
-                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-emerald-900 mb-2 sm:mb-3
-                            px-4 sm:px-0">
+                        <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-emerald-900 mb-2 sm:mb-3
+                            px-4 sm:px-0 font-bold">
                             {message.name}
                         </h2>
-                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl text-emerald-700 mb-3 sm:mb-4
+                        <h3 className="text-lg sm:text-lg md:text-xl lg:text-2xl text-emerald-700 mb-3 sm:mb-4
                             px-4 sm:px-0">
                             {message.title}
                         </h3>
                         <div className="prose prose-emerald max-w-none">
-                            <div className="text-emerald-800 text-sm sm:text-base md:text-lg text-justify leading-relaxed
-                                space-y-3 sm:space-y-4 px-4 sm:px-0">
+                            <div className="text-emerald-800 text-base sm:text-base md:text-lg text-justify leading-relaxed 
+                                space-y-4 px-4 sm:px-0">
                                 {isExpanded
                                     ? formatMessage(message.message)
                                     : formatMessage(truncateMessage(message.message))}
@@ -77,9 +77,9 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, isReverse = fa
                         {message.message.length > 300 && (
                             <button
                                 onClick={() => setIsExpanded(!isExpanded)}
-                                className="mt-4 sm:mt-6 text-emerald-600 hover:text-emerald-800 font-medium
+                                className="mt-5 text-emerald-600 hover:text-emerald-800 font-medium
                                     transition-colors duration-200 underline-offset-2 hover:underline
-                                    text-sm sm:text-base"
+                                    text-base sm:text-base px-4 sm:px-0"
                             >
                                 {isExpanded ? 'Show Less' : 'Read More'}
                             </button>

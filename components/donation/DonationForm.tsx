@@ -97,7 +97,7 @@ export function DonationForm() {
             }
 
             const options: RazorpayOptions = {
-                currency: "",
+                currency: "INR",
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: orderData.amount,
                 order_id: orderData.id,

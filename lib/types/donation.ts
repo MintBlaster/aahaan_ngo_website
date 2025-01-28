@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 export interface DonationFormData {
     customAmount?: string;
     isCustomAmount?: boolean;
@@ -12,6 +14,7 @@ export interface DonationFormData {
     phone?: string;
     paymentMethod: string;
 }
+
 export interface RazorpayResponse {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -59,6 +62,8 @@ interface RazorpayClass {
     new (options: RazorpayOptions): RazorpayInstance;
 }
 
+
+// Declare the global namespace properly
 declare global {
     interface Window {
         Razorpay: RazorpayClass;
@@ -66,4 +71,3 @@ declare global {
 }
 
 export type PaymentStatus = 'pending' | 'success' | 'failed';
-

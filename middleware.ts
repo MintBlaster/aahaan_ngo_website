@@ -1,4 +1,3 @@
-// middleware.ts
 import { NextResponse } from 'next/server'
 
 export function middleware() {
@@ -10,7 +9,7 @@ export function middleware() {
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https: blob:;
     font-src 'self' https://fonts.gstatic.com;
-    connect-src 'self' https://api.razorpay.com https://*.google-analytics.com;
+    connect-src 'self' https://api.razorpay.com https://*.google-analytics.com https://rgjvwuynczdwfjvqcaqt.supabase.co;
     frame-src 'self' https://api.razorpay.com;
     object-src 'none';
     base-uri 'self';
